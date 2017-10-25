@@ -3,6 +3,8 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="matter.min.js" type="text/javascript"></script>
         
+<!--https://github.com/liabru/matter-js/blob/master/examples/doublePendulum.js-->
+<!--http://brm.io/matter-js/demo/#doublePendulum-->
         <style>
             html,body {
                 background: #FFF;
@@ -19,6 +21,9 @@
             var Engine = Matter.Engine,
             Render = Matter.Render,
             World = Matter.World,
+            Mouse = Matter.Mouse,
+            Constraint = Matter.Constraint,
+            MouseConstraint = Matter.MouseConstraint,
             Bodies = Matter.Bodies;
 
             // create an engine
@@ -37,15 +42,35 @@
             });
 
             // create two boxes and a ground
-            var boxA = Bodies.rectangle(360, 200, 80, 80, { isStatic: true });
-            boxA.restitution = .9;
-            var boxB = Bodies.rectangle(450, 50, 120, 8);
-            boxB.restitution = .4;
+            var box1 = Bodies.rectangle(360, 200, 80, 80, { isStatic: true });
+            box1.restitution = .9;
+            var box2 = Bodies.rectangle(560, 380, 80, 80, { isStatic: true });
+            box2.restitution = .5;
+            var stick = Bodies.rectangle(450, 50, 160, 8);
+            stick.restitution = .4;
             var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
             ground.restitution = .1;
 
             // add all of the bodies to the world
-            World.add(engine.world, [boxA, boxB, ground]);
+            var world = engine.world;
+            World.add(world, [box1, box2, stick, ground]);
+
+            // add mouse control
+            var mouse = Mouse.create(render.canvas),
+                mouseConstraint = MouseConstraint.create(engine, {
+                    mouse: mouse,
+                    constraint: {
+                        stiffness: 0.2,
+                        render: {
+                            visible: false
+                        }
+                    }
+                });
+
+            World.add(world, mouseConstraint);
+
+            // keep the mouse in sync with rendering
+            render.mouse = mouse;
 
             // run the engine
             Engine.run(engine);
