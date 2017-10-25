@@ -15,5 +15,5 @@ npm start
 
 # terminal 2
 # start back-end
-node server
+node run server
 ```

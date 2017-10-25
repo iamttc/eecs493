@@ -1,9 +1,13 @@
 import React from 'react';
-import './content.css';
+import './styles/content.css';
+import '../services/actionService';
 
 const Content = () => {
   return (
-    <div className="content">eecs 493 group project</div>
+    <div className="content">
+      <h1>game title</h1>
+      <p className="action"></p>
+    </div>
   );
 }
 

@@ -1,18 +1,24 @@
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var port = process.env.PORT || 8000;
+var express = require('express');
+var socketIo = require('socket.io');
 
-app.get('/', function(req, res){
-  res.sendFile(__dirname + '/public/index.html');
-});
+// constants
+const PORT = process.env.PORT || 8000;
+const INDEX = __dirname + '/public/index.html';
 
-io.on('connection', function(socket){
-  socket.on('chat message', function(msg){
+// create server and listen
+const server = express()
+  .use((req, res) => res.sendFile(INDEX))
+  .listen(PORT, () => console.log(`Listening on ${ PORT }`));
+
+// init socket.io
+const io = socketIo(server);
+
+// listen for socket connections
+io.on('connection', (socket) => {
+  socket.on('chat message', (msg) => {
     io.emit('chat message', msg);
   });
-});
-
-http.listen(port, function(){
-  console.log('listening on port ' + port);
+  socket.on('game action', (data) => {
+    io.emit('game action', data);
+  });
 });
