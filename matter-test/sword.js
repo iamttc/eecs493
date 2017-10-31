@@ -1,22 +1,59 @@
 
+var VELOCITY = 6;
+
 class Sword {
+
     constructor(){
+
+        //hilt
         this.hilt = Bodies.circle(200, 100, 10, 10); //, { isStatic: true });
         this.hilt.restitution = .9;
         Body.setStatic(this.hilt, true);
 
-        this.stick = Bodies.rectangle(450, 50, 160, 8);
-        this.stick.restitution = .4;
+        //shaft
+        this.shaft = Bodies.rectangle(450, 50, 160, 8);
+        this.shaft.restitution = .4;
 
+        //sword
         this.sword = Composite.create({
-            bodies: [this.stick, this.hilt]
+            bodies: [this.shaft, this.hilt]
         });
 
+        //add to world
         World.add(world, this.sword);
+
+        //initialize where the mouse "is"
+        this.setMousePos({x:0,y:0});
+
+        //make it move
+        var instance = this;
+        setInterval(function(){
+            instance.move();
+        }, 20);
     }
 
-    move(pos){
-        Body.setPosition(this.hilt, pos);
+    setMousePos(pos){
+        this.mousePos = pos;
+    }
+
+    move(){
+        var currentPos = this.hilt.position;
+        console.log(currentPos);
+        var d = {
+            x: currentPos.x - this.mousePos.x,
+            y: currentPos.y - this.mousePos.y
+        };
+        if(Math.abs(d.x) < 10 && Math.abs(d.y) < 10)
+            return;
+        console.log(d);
+        var a = Math.atan2(d.x, d.y);
+        console.log(a);
+        var newPos = {
+            x: -VELOCITY * Math.sin(a) + currentPos.x,
+            y: -VELOCITY * Math.cos(a) + currentPos.y
+        }
+        console.log(newPos);
+        Body.setPosition(this.hilt, newPos);
     }
 
     //on kill set mass to mass + 1
@@ -59,9 +96,9 @@ var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
 ground.restitution = .1;
 
 var group = Body.nextGroup(true);
-var pendulum = Composites.stack(350, 160, 2, 1, -20, 0, function(x, y) { 
+var pendulum = Composites.stack(350, 160, 2, 1, 80, 0, function(x, y) { 
     return Bodies.rectangle(x, y, 200, 25, { 
-        collisionFilter: { group: group },
+        //collisionFilter: { group: group },
         frictionAir: 0,
         chamfer: 5,
         render: { 
@@ -119,10 +156,10 @@ $("body").on("mousedown",function(){
 });
 
 $("body").on("mousemove",function(e){
-    var pos = {
+    var mousePos = {
         x: e.pageX,
         y: e.pageY
     }
-    sword.move(pos);
+    sword.setMousePos(mousePos);
     
 });
