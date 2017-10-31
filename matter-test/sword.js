@@ -4,19 +4,26 @@ var VELOCITY = 6;
 class Sword {
 
     constructor(){
-
+        
         //hilt
-        this.hilt = Bodies.circle(200, 100, 10, 10); //, { isStatic: true });
-        this.hilt.restitution = .9;
+        this.hilt = Bodies.circle(200, 200, 10, 10);
         Body.setStatic(this.hilt, true);
 
         //shaft
-        this.shaft = Bodies.rectangle(450, 50, 160, 8);
+        this.shaft = Bodies.rectangle(200, 200, 160, 8);
         this.shaft.restitution = .4;
 
         //sword
         this.sword = Composite.create({
             bodies: [this.shaft, this.hilt]
+        });
+        Composites.chain(this.sword, 0.45, 0, 0, 0, { 
+            stiffness: 0.1, 
+            length: 15,
+            angularStiffness: 0.2,
+            render: {
+                strokeStyle: '#4a485b'
+            }
         });
 
         //add to world
@@ -38,21 +45,16 @@ class Sword {
 
     move(){
         var currentPos = this.hilt.position;
-        console.log(currentPos);
         var d = {
             x: currentPos.x - this.mousePos.x,
             y: currentPos.y - this.mousePos.y
         };
-        if(Math.abs(d.x) < 5 && Math.abs(d.y) < 5)
-            return;
-        console.log(d);
+        if(Math.abs(d.x) < 5 && Math.abs(d.y) < 5) return;
         var a = Math.atan2(d.x, d.y);
-        console.log(a);
         var newPos = {
             x: -VELOCITY * Math.sin(a) + currentPos.x,
             y: -VELOCITY * Math.cos(a) + currentPos.y
         }
-        console.log(newPos);
         Body.setPosition(this.hilt, newPos);
     }
 
