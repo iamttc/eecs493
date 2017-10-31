@@ -43,7 +43,7 @@ class Sword {
             x: currentPos.x - this.mousePos.x,
             y: currentPos.y - this.mousePos.y
         };
-        if(Math.abs(d.x) < 10 && Math.abs(d.y) < 10)
+        if(Math.abs(d.x) < 5 && Math.abs(d.y) < 5)
             return;
         console.log(d);
         var a = Math.atan2(d.x, d.y);
