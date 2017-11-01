@@ -1,5 +1,6 @@
 
-var VELOCITY = 6;
+var MAX_V = 14;
+var MIN_V = 6;
 
 class Sword {
 
@@ -47,13 +48,14 @@ class Sword {
         var currentPos = this.hilt.position;
         var d = {
             x: currentPos.x - this.mousePos.x,
-            y: currentPos.y - this.mousePos.y
+            y: currentPos.y - this.mousePos.y,
         };
         if(Math.abs(d.x) < 5 && Math.abs(d.y) < 5) return;
+        var h = Math.sqrt(Math.pow(d.x,2) + Math.pow(d.y,2));
         var a = Math.atan2(d.x, d.y);
         var newPos = {
-            x: -VELOCITY * Math.sin(a) + currentPos.x,
-            y: -VELOCITY * Math.cos(a) + currentPos.y
+            x: (-MAX_V * h / W - MIN_V) * Math.sin(a) + currentPos.x,
+            y: (-MAX_V * h / H - MIN_V) * Math.cos(a) + currentPos.y
         }
         Body.setPosition(this.hilt, newPos);
     }
