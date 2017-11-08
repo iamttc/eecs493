@@ -1,6 +1,11 @@
 
 var MAX_V = 14;
-var MIN_V = 6;
+var MIN_V = 3;
+
+var W = 800;
+var H = 600;
+var WIN_W = window.innerWidth;
+var WIN_H = window.innerHeight;
 
 class Sword {
 
@@ -77,13 +82,11 @@ var Engine = Matter.Engine,
     Bodies = Matter.Bodies;
 
 // create an engine
-var W = window.innerWidth;
-var H = window.innerHeight;
 var engine = Engine.create();
 
 // create a renderer
 var render = Render.create({
-    element: document.body,
+    element: document.getElementById("field"),
     engine: engine,
     options: {
         width: W,
@@ -155,14 +158,14 @@ Render.run(render);
 
 //listeners
 
-$("body").on("mousedown",function(){
+$("#field").on("mousedown",function(){
     World.add(world, Bodies.rectangle(450, 50, 160, 8));
 });
 
-$("body").on("mousemove",function(e){
+$("#field").on("mousemove",function(e){
     var mousePos = {
-        x: e.pageX,
-        y: e.pageY
+        x: e.pageX - (WIN_W-W)/2,
+        y: e.pageY - (WIN_H-H)/2
     }
     sword.setMousePos(mousePos);
     
