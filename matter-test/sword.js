@@ -165,7 +165,7 @@ $("#field").on("mousedown",function(){
 });
 
 $("body").on("mousemove",function(e){
-    var rx = e.pageX - LOWER_BOUND_H;
+    var rx = e.pageX - LOWER_BOUND_W;
     rx = (rx < 0) ? 0 : (rx > W) ? W : rx;
     var ry = e.pageY - LOWER_BOUND_H;
     ry = (ry < 0) ? 0 : (ry > H) ? H : ry;
