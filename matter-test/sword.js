@@ -6,6 +6,8 @@ var W = 800;
 var H = 600;
 var WIN_W = window.innerWidth;
 var WIN_H = window.innerHeight;
+var LOWER_BOUND_W = (WIN_W-W)/2;
+var LOWER_BOUND_H = (WIN_H-H)/2;
 
 class Sword {
 
@@ -162,10 +164,14 @@ $("#field").on("mousedown",function(){
     World.add(world, Bodies.rectangle(450, 50, 160, 8));
 });
 
-$("#field").on("mousemove",function(e){
+$("body").on("mousemove",function(e){
+    var rx = e.pageX - LOWER_BOUND_H;
+    rx = (rx < 0) ? 0 : (rx > W) ? W : rx;
+    var ry = e.pageY - LOWER_BOUND_H;
+    ry = (ry < 0) ? 0 : (ry > H) ? H : ry;
     var mousePos = {
-        x: e.pageX - (WIN_W-W)/2,
-        y: e.pageY - (WIN_H-H)/2
+        x: rx,
+        y: ry
     }
     sword.setMousePos(mousePos);
     
