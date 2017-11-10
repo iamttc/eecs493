@@ -2,6 +2,7 @@ import React from 'react';
 import './styles/content.css';
 import '../services/actionService';
 
+
 const Content = () => {
   return (
     <div className="content">
