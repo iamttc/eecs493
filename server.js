@@ -21,4 +21,10 @@ io.on('connection', (socket) => {
   socket.on('game action', (data) => {
     io.emit('game action', data);
   });
+
+
+
+  socket.on('player keypress', (data) => {
+    io.emit('player keypress', data);
+  });
 });
