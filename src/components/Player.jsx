@@ -1,6 +1,5 @@
 import React from 'react';
 import './styles/player.css';
-
 import '../services/playerService';
 
 
