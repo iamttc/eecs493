@@ -7,7 +7,7 @@ class App extends React.Component {
     return (
       <div className="app">
         <Splash />
-        <Map />
+        {/* <Map /> */}
       </div>
     );
   }
