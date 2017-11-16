@@ -1,6 +1,56 @@
+body {
+  background: #000;
+}
 .map {
   position:relative;
   height: 100vh;
   width: 100vw;
   border: 1px solid blue;
+	background: linear-gradient(
+    -45deg, 
+    rgba(238, 48, 23, 0.3), 
+    rgba(238, 45, 122, 0.3), 
+    rgba(9, 156, 209, 0.3), 
+    rgba(17, 228, 175, 0.3)
+  );
+	background-size: 400% 400%;
+	-webkit-animation: GradientRotation 15s ease infinite;
+	-moz-animation: GradientRotation 15s ease infinite;
+	animation: GradientRotation 15s ease infinite;
+}
+
+@-webkit-keyframes GradientRotation {
+	0% {
+    background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+
+@-moz-keyframes GradientRotation {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+
+@keyframes GradientRotation {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
 }
