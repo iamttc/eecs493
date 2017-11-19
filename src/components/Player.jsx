@@ -5,14 +5,28 @@ import './styles/player.css';
 
 const Player = (props) => {
 
-  const style = {
+  // position
+  const style1 = {
     top: props.position.top,
-    left: props.position.left
+    left: props.position.left,
+  };
+
+  // rotation
+  const rotate = `rotate(${props.position.rotation}deg)`;
+  const style2 = {
+    '-ms-transform': rotate,
+    '-webkit-transform': rotate,
+    transform: rotate
   };
 
   return (
-    <div className="player" id={props.playerId} style={style}>
+    <div className="player" id={props.playerId} style={style1}>
+      <div className="ship-wrapper" style={style2}>
+        <div className="barrel"></div>
+        <div className="ship"></div>
+      </div>
       <p className="name">{props.playerId}</p>
+      {/* {props.playerId} */}
     </div>
   );
 };

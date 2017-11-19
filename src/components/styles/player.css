@@ -1,11 +1,27 @@
 .player {
   position: absolute;
+  text-align: center;
+}
+
+.ship-wrapper {
+  display: inline-block;
+}
+
+.ship {
   height: 20px;
   width: 20px;
   border-radius: 10px;
-  background-color: red;
+  background-color: #5cf442;
+}
+
+.barrel {
+  height: 10px;
+  width: 6px;
+  margin: 0 0 -6px 7px;
+  background-color: #f4ac41;
 }
 
 .name {
-  margin-bottom: -10px;
+  display: block;
+  color: white;
 }
