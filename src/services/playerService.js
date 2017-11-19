@@ -15,10 +15,14 @@ export class PlayerService {
       splash: false,
       map: true
     };
+    this.center = {
+      X: window.innerWidth/2,
+      Y: window.innerHeight/2
+    };
 
     // positioning
-    this.top = 0;
-    this.left = 0;
+    this.top = Math.floor(Math.random() * 4940) + 10;
+    this.left = Math.floor(Math.random() * 5990) + 10;
     this.rotation = 0;
   }
 
@@ -41,6 +45,7 @@ export class PlayerService {
    * continuously emit the new location of the player
    */
   updateLocation = () => {
+    window.scrollTo(this.left - (window.innerWidth / 2), this.top - (window.innerHeight / 2));
     socket.emit('update location', {
       playerId: this.playerId,
       position: {
@@ -69,21 +74,30 @@ export class PlayerService {
     $(window).keypress((e) => {
       switch(e.which) {
         case this.KEYS.up:
-          this.top -= 10;
+          if (this.top > 10)
+            this.top -= 10;
           break;
         case this.KEYS.down:
-          this.top += 10;
+          if (this.top < 4940)
+            this.top += 10;
           break;
         case this.KEYS.left:
-          this.left -= 10;
+          if (this.left > 10)
+            this.left -= 10;
           break;
         case this.KEYS.right:
-          this.left += 10;
+          if (this.top < 4990)
+            this.left += 10;
           break;
         case this.KEYS.spacebar:
         default:
           break;
       }
+    });
+
+    $(window).mousemove((e) => {
+      var r = Math.atan2(this.top - e.pageY, this.left - e.pageX) - Math.PI/2;
+      this.rotation = r;
     });
   }
 }

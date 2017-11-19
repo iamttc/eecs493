@@ -12,10 +12,10 @@ const Player = (props) => {
   };
 
   // rotation
-  const rotate = `rotate(${props.position.rotation}deg)`;
+  const rotate = `rotate(${props.position.rotation}rad)`;
   const style2 = {
-    '-ms-transform': rotate,
-    '-webkit-transform': rotate,
+    // '-ms-transform': rotate,
+    // '-webkit-transform': rotate,
     transform: rotate
   };
 
@@ -26,7 +26,6 @@ const Player = (props) => {
         <div className="ship"></div>
       </div>
       <p className="name">{props.playerId}</p>
-      {/* {props.playerId} */}
     </div>
   );
 };
