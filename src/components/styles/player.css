@@ -5,6 +5,8 @@
 
 .ship-wrapper {
   display: inline-block;
+  -webkit-transform-origin: 50% 12px;
+  transform-origin: 50% 12px;
 }
 
 .ship {
@@ -12,10 +14,11 @@
   width: 20px;
   border-radius: 10px;
   background-color: #5cf442;
+  box-shadow: 0 0 6px #5cf442;
 }
 
 .barrel {
-  height: 10px;
+  height: 8px;
   width: 6px;
   margin: 0 0 -6px 7px;
   background-color: #f4ac41;
@@ -23,5 +26,5 @@
 
 .name {
   display: block;
-  color: white;
+  color: rgba(255,255,255,.8);
 }
