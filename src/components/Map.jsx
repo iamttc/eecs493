@@ -1,9 +1,10 @@
 import _ from 'lodash';
+// import $ from 'jquery';
 import React from 'react';
 import Player from './Player';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { updateContent } from '../redux/actions';
+// import { updateContent } from '../redux/actions';
 import './styles/map.css';
 
 // constants
@@ -17,9 +18,15 @@ const Map = (props) => {
   if (!_.isEmpty(props.toggle) && !props.toggle.map)
     return null;
 
+  // get players
+  const players = _.map(props.players, (position, playerId) => {
+    return <Player key={playerId} playerId={playerId} position={position} />;
+  });
+
+  // return updated map
   return (
     <div className="map">
-      <Player />
+      {players}
     </div>
   );
 }
@@ -27,17 +34,13 @@ const Map = (props) => {
 // redux options
 Map.propTypes = {
   toggle: PropTypes.object.isRequired,
+  players: PropTypes.object.isRequired,
   changeScreen: PropTypes.func
 };
 
 const mapStateToProps = state => ({
-  toggle: state.toggle
+  toggle: state.toggle,
+  players: state.players
 });
 
-const mapDispatchToProps = dispatch => ({
-  changeScreen: () => {
-    dispatch(updateContent(playContentToggle));
-  }
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Map);
+export default connect(mapStateToProps, null)(Map);

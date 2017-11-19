@@ -1,59 +1,91 @@
 import { $, socket } from './baseService';
+import { updatePlayerLocation, updateContent } from '../redux/actions';
 
-const KEYS = {
-  left: 97,
-  up: 119,
-  right: 100,
-  down: 115,
-  spacebar: 32
-};
+export class PlayerService {
 
+  constructor() {
+    this.KEYS = {
+      left: 97,
+      up: 119,
+      right: 100,
+      down: 115,
+      spacebar: 32
+    };
+    this.playContentToggle = {
+      splash: false,
+      map: true
+    };
 
-$(() => {
+    // positioning
+    this.top = 0;
+    this.left = 0;
+    this.rotation = 0;
+  }
 
-  const player = $('#player1');
+  initPlayerService() {
+    return (dispatch) => {
+      // get player name
+      this.playerId = $('.name').val();
 
-  // emit keypress to other players
-  $(window).keypress((e) => {
+      // update redux store
+      dispatch(updateContent(this.playContentToggle));
 
-    const x = player.offset().left;
-    const y = player.offset().top;
-    let moved = false;
+      // continuously update locations
+      this.watchMovement();
+      setInterval(this.updateLocation, 50);
+      dispatch(this.updateOtherPlayers());
+    };
+  }
 
-    switch(e.which) {
-      case KEYS.up:
-        player.css({top: y - 10, left: x});
-        moved = true;
-        break;
-      case KEYS.down:
-        player.css({top: y + 10, left: x});
-        moved = true;
-        break;
-      case KEYS.left:
-        player.css({top: y, left: x - 10});
-        moved = true;
-        break;
-      case KEYS.right:
-        player.css({top: y, left: x + 10});
-        moved = true;
-        break;
-      case KEYS.spacebar:
-        break;
-      default:
-        break;
-    }
+  /**
+   * continuously emit the new location of the player
+   */
+  updateLocation = () => {
+    socket.emit('update location', {
+      playerId: this.playerId,
+      position: {
+        rotation: this.rotation,
+        top: this.top,
+        left: this.left
+      }
+    });
+  }
 
-    // update move
-    if (moved) {
-      socket.emit('player keypress', {
-        playerId:'#player1',
-        offset: player.offset()
+  /**
+   * update the redux store for all player locations
+   */
+  updateOtherPlayers() {
+    return (dispatch) => {
+      socket.on('update location', (data) => {
+        dispatch(updatePlayerLocation(data));
       });
     }
-  });
+  }
 
-  socket.on('player keypress', (data) => {
-    const player2 = $(data.playerId);
-    player2.css(data.offset);
-  });
-});
+  /**
+   * watch keypress
+   */
+  watchMovement() {
+    $(window).keypress((e) => {
+      switch(e.which) {
+        case this.KEYS.up:
+          this.top -= 10;
+          break;
+        case this.KEYS.down:
+          this.top += 10;
+          break;
+        case this.KEYS.left:
+          this.left -= 10;
+          break;
+        case this.KEYS.right:
+          this.left += 10;
+          break;
+        case this.KEYS.spacebar:
+        default:
+          break;
+      }
+    });
+  }
+}
+
+export default new PlayerService();

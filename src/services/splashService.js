@@ -1,5 +1,5 @@
-import { $, socket } from './baseService';
+// import { $, socket } from './baseService';
 
-$(() => {
-  console.log('init splashService');
-});
+// $(() => {
+//   console.log('init splashService');
+// });

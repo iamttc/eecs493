@@ -1,13 +1,26 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './styles/player.css';
-import '../services/playerService';
 
 
+const Player = (props) => {
 
-const Player = () => {
+  const style = {
+    top: props.position.top,
+    left: props.position.left
+  };
+
   return (
-    <div className="player" id="player1"></div>
+    <div className="player" id={props.playerId} style={style}>
+      <p className="name">{props.playerId}</p>
+    </div>
   );
-}
+};
+
+Player.propTypes = {
+  playerId: PropTypes.string.isRequired,
+  position: PropTypes.object.isRequired
+};
 
 export default Player;
+

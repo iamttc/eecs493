@@ -15,16 +15,7 @@ const io = socketIo(server);
 
 // listen for socket connections
 io.on('connection', (socket) => {
-  socket.on('chat message', (msg) => {
-    io.emit('chat message', msg);
-  });
-  socket.on('game action', (data) => {
-    io.emit('game action', data);
-  });
-
-
-
-  socket.on('player keypress', (data) => {
-    io.emit('player keypress', data);
+  socket.on('update location', (data) => {
+    io.emit('update location', data);
   });
 });

@@ -2,14 +2,9 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { updateContent } from '../redux/actions';
+import PlayerService from '../services/playerService';
 import '../services/splashService';
-
-// constants
-const playContentToggle = {
-  splash: false,
-  map: true
-};
+import './styles/splash.css';
 
 // render content
 const Splash = (props) => {
@@ -18,9 +13,13 @@ const Splash = (props) => {
 
   return (
     <div className="splash">
-      <h1>Space Fighters</h1>
-      <input type="text" placeholder="your name"/>
-      <button onClick={() => props.changeScreen()}>Play</button>
+      <input type="text" className="name input" placeholder="Name" />
+      <button className="input" onClick={() => props.initPlayer()}>Play</button>
+      <div className="instructions">
+        [Up/Down] to move<br/>
+        [Left/Right] to spin<br/>
+        [Space] to shoot.
+      </div>
     </div>
   );
 };
@@ -28,7 +27,7 @@ const Splash = (props) => {
 // redux options
 Splash.propTypes = {
   toggle: PropTypes.object.isRequired,
-  changeScreen: PropTypes.func
+  initPlayer: PropTypes.func
 };
 
 const mapStateToProps = state => ({
@@ -36,8 +35,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  changeScreen: () => {
-    dispatch(updateContent(playContentToggle));
+  initPlayer: () => {
+    dispatch(PlayerService.initPlayerService());
   }
 });
 
