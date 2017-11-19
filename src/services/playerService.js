@@ -24,12 +24,16 @@ export class PlayerService {
       splash: false,
       map: true
     };
+    this.center = {
+      X: window.innerWidth/2,
+      Y: window.innerHeight/2
+    };
 
     // positioning
-    this.top = 0;
-    this.left = 0;
-    this.x = 0;
-    this.y = 0;
+    this.top = Math.floor(Math.random() * 4940) + 10;
+    this.left = Math.floor(Math.random() * 5990) + 10;
+    this.x = this.left;
+    this.y = this.top;
     this.rotation = 0;
 
     this.velocity = 9;
@@ -70,6 +74,7 @@ export class PlayerService {
       this.left = (-v) * Math.sin(a) + this.left
     }
 
+    window.scrollTo(this.left - (window.innerWidth / 2), this.top - (window.innerHeight / 2));
     socket.emit('update location', {
       playerId: this.playerId,
       position: {
@@ -114,8 +119,9 @@ export class PlayerService {
           break;
       }
     });
+
     $(window).mousemove((e) => {
-      var r = Math.atan2(CENTER.Y-e.pageY, CENTER.X-e.pageX) - Math.PI/2;
+      var r = Math.atan2(this.top - e.pageY, this.left - e.pageX) - Math.PI/2;
       this.rotation = r;
     });
   }
