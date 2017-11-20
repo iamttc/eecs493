@@ -1,17 +1,10 @@
 import _ from 'lodash';
-// import $ from 'jquery';
 import React from 'react';
 import Player from './Player';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { updateContent } from '../redux/actions';
 import './styles/map.css';
 
-// constants
-const playContentToggle = {
-  splash: true,
-  map: false
-};
 
 // render content
 const Map = (props) => {

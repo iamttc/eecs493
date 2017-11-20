@@ -14,8 +14,8 @@ const Player = (props) => {
   // rotation
   const rotate = `rotate(${props.position.rotation}rad)`;
   const style2 = {
-    // '-ms-transform': rotate,
-    // '-webkit-transform': rotate,
+    msTransform: rotate,
+    WebkitTransform: rotate,
     transform: rotate
   };
 

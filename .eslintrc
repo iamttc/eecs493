@@ -8,6 +8,7 @@
     "es6": true,
     "node": true
   },
+  "parser": "babel-eslint",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -15,6 +16,7 @@
     "sourceType": "module"
   },
   "rules": {
+    "strict": 0,
     "no-const-assign": "warn",
     "no-this-before-super": "warn",
     "no-undef": "warn",
