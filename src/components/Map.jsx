@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import Player from './Player';
+import Asteroid from './Asteroid';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import './styles/map.css';
@@ -16,9 +17,15 @@ const Map = (props) => {
     return <Player key={playerId} playerId={playerId} position={position} />;
   });
 
+  // make asteroids
+  const asteroids = _.map(props.asteroids, (data, idx) => {
+    return <Asteroid key={idx} position={data.position} rotation={data.rotation} />;
+  });
+
   // return updated map
   return (
     <div className="map">
+      {asteroids}
       {players}
     </div>
   );
@@ -28,12 +35,14 @@ const Map = (props) => {
 Map.propTypes = {
   toggle: PropTypes.object.isRequired,
   players: PropTypes.object.isRequired,
+  asteroids: PropTypes.array.isRequired,
   changeScreen: PropTypes.func
 };
 
 const mapStateToProps = state => ({
   toggle: state.toggle,
-  players: state.players
+  players: state.players,
+  asteroids: state.asteroids
 });
 
 export default connect(mapStateToProps, null)(Map);

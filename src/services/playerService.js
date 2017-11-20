@@ -7,7 +7,7 @@ const DOWN = 83;
 const LEFT = 65;
 const RIGHT = 68;
 const UPDATE_RATE = 50;
-const MOVE_DIST = 50;
+const MOVE_DIST = 100;
 const WORLD_HEIGHT = 5000;
 const WORLD_WIDTH = 5000;
 
@@ -33,7 +33,7 @@ export class PlayerService {
     this.desiredLeft = this.left;
 
     this.rotation = 0;
-    this.velocity = 5;
+    this.velocity = 10;
   }
 
   initPlayerService() {
@@ -47,7 +47,7 @@ export class PlayerService {
       // continuously update locations
       this.watchMovement();
       setInterval(this.updateLocation, UPDATE_RATE);
-      setInterval(this.moveCharacter, UPDATE_RATE / 2)
+      setInterval(this.moveCharacter, UPDATE_RATE);
       dispatch(this.updateOtherPlayers());
     };
   }
@@ -103,7 +103,7 @@ export class PlayerService {
     });
     $(window).mousemove((e) => {
       var r = Math.atan2(this.top - e.pageY, this.left - e.pageX) - Math.PI/2;
-      this.rotation = r;
+      this.rotation = Math.round(r);
     });
   }
 

@@ -1,11 +1,13 @@
 import * as actionTypes from './actionTypes';
+import { getAsteroids } from '../utils/utils';
 
 const initState = {
   toggle: {
     splash: true,
     map: false
   },
-  players: {}
+  players: {},
+  asteroids: getAsteroids()
 };
 
 const Reducer = (state = initState, action) => {
