@@ -7,7 +7,7 @@ const DOWN = 83;
 const LEFT = 65;
 const RIGHT = 68;
 const UPDATE_RATE = 50;
-const MOVE_DIST = 70;
+const MOVE_DIST = 50;
 const WORLD_HEIGHT = 5000;
 const WORLD_WIDTH = 5000;
 
@@ -33,7 +33,7 @@ export class PlayerService {
     this.desiredLeft = this.left;
 
     this.rotation = 0;
-    this.velocity = 9;
+    this.velocity = 5;
   }
 
   initPlayerService() {
@@ -47,7 +47,7 @@ export class PlayerService {
       // continuously update locations
       this.watchMovement();
       setInterval(this.updateLocation, UPDATE_RATE);
-      setInterval(this.moveCharacter, UPDATE_RATE)
+      setInterval(this.moveCharacter, UPDATE_RATE / 2)
       dispatch(this.updateOtherPlayers());
     };
   }

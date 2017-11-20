@@ -9,6 +9,7 @@ body {
 	overflow: scroll;
 	height: auto;
   width: auto;
+  background: #000;
 }
 
 .app {

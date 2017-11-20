@@ -1,23 +1,19 @@
-body {
-	background: linear-gradient(
-		-45deg, 
-		rgba(238, 48, 23, 0.9), 
-		rgba(238, 45, 122, 0.9), 
-		rgba(9, 156, 209, 0.9), 
-		rgba(17, 228, 175, 0.9)
-	);
-	background-size: 5000px 5000px;
-	/*-webkit-animation: GradientRotation 15s ease infinite;
-	-moz-animation: GradientRotation 15s ease infinite;
-	animation: GradientRotation 15s ease infinite;*/
-}
-
 .map {
-  	position: absolute;
-  	height: 5000px;
+	position: absolute;
+	height: 5000px;
 	width: 5000px;
 	border: 5px solid white;
-	background: url("img/map.png");
+	background-size: 5000px 5000px;
+	background: linear-gradient(
+		-45deg, 
+		rgba(238, 48, 23, 0.3), 
+		rgba(238, 45, 122, 0.3), 
+		rgba(9, 156, 209, 0.3), 
+		rgba(17, 228, 175, 0.3)
+	);
+	-webkit-animation: GradientRotation 15s ease infinite;
+	-moz-animation: GradientRotation 15s ease infinite;
+	animation: GradientRotation 15s ease infinite;
 }
 
 @-webkit-keyframes GradientRotation {
