@@ -12,7 +12,23 @@ export function getAsteroids() {
         height: Math.floor(Math.random()*80) + 260,
         width: Math.floor(Math.random()*80) + 260
       },
-      rotation: Math.random() * Math.PI * 2
+      rotation: Math.random() * Math.PI * 2,
+      polygon: [
+        Math.floor(Math.random()*20)-10,
+        Math.floor(Math.random()*20)-10,
+        Math.floor(Math.random()*20)-10,
+        Math.floor(Math.random()*20)-10,
+        Math.floor(Math.random()*20)-10,
+        Math.floor(Math.random()*20)-10,
+        Math.floor(Math.random()*20)-10,
+        Math.floor(Math.random()*20)-10,
+        Math.floor(Math.random()*20)-10,
+        Math.floor(Math.random()*20)-10,
+        Math.floor(Math.random()*20)-10,
+        Math.floor(Math.random()*20)-10,
+        Math.floor(Math.random()*20)-10,
+        Math.floor(Math.random()*20)-10
+      ]
     });
   }
   return asteroids;
