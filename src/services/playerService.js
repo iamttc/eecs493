@@ -103,7 +103,7 @@ export class PlayerService {
     });
     $(window).mousemove((e) => {
       var r = Math.atan2(this.top - e.pageY, this.left - e.pageX) - Math.PI/2;
-      this.rotation = Math.round(r);
+      this.rotation = r; // Math.round(r);
     });
   }
 

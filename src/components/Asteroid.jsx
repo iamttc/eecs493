@@ -11,7 +11,9 @@ const Asteroid = (props) => {
     left: props.position.left,
     msTransform: rotate,
     WebkitTransform: rotate,
-    transform: rotate
+    transform: rotate,
+    height: props.dimension.height,
+    width: props.dimension.width
   };
 
   return (
@@ -21,6 +23,7 @@ const Asteroid = (props) => {
 
 Asteroid.propTypes = {
   position: PropTypes.object.isRequired,
+  dimension: PropTypes.object.isRequired,
   rotation: PropTypes.number.isRequired
 };
 

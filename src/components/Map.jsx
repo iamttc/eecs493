@@ -19,7 +19,7 @@ const Map = (props) => {
 
   // make asteroids
   const asteroids = _.map(props.asteroids, (data, idx) => {
-    return <Asteroid key={idx} position={data.position} rotation={data.rotation} />;
+    return <Asteroid key={idx} position={data.position} rotation={data.rotation} dimension={data.dimension} />;
   });
 
   // return updated map

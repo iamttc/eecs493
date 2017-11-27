@@ -8,7 +8,11 @@ export function getAsteroids() {
         top: Math.floor(Math.random() * (5000 - 500)),
         left: Math.floor(Math.random() * (5000 - 500))
       },
-      rotation: Math.floor(Math.random() * 360)
+      dimension: {
+        height: Math.floor(Math.random()*80) + 260,
+        width: Math.floor(Math.random()*80) + 260
+      },
+      rotation: Math.random() * Math.PI * 2
     });
   }
   return asteroids;
