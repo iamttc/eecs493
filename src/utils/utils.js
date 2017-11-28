@@ -29,6 +29,7 @@ export function getAsteroids() {
         Math.floor(Math.random()*20)-10,
         Math.floor(Math.random()*20)-10
       ]
+      //spin speed
     });
   }
   return asteroids;

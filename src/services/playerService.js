@@ -92,6 +92,42 @@ export class PlayerService {
   }
 
   /**
+   * fire a bullet
+   */
+  fireBullet() {
+    var bullet = {
+      top: this.top,
+      left: this.left,
+      direction: this.rotation,
+      distance: 0
+    };
+
+    // update the bullet location
+    /*setInterval(updateBullet(bullet), 30);*/
+  }
+
+  /**
+   * update the bullets location
+   */
+  updateBullet(bullet){
+    // if the distance traveled is > 200 end the bullet
+
+    // otherwise move the bullet in the proper direction
+    // and update the distance it has traveled
+
+    // send the updated location to the other players
+    /*
+    socket.emit('update bullet', {
+      playerId: this.playerId,
+      position: {
+        top: bullet.top,
+        left: bullet.left
+      }
+    });
+    */
+  }
+
+  /**
    * watch keypress
    */
   watchMovement() {
@@ -104,6 +140,9 @@ export class PlayerService {
     $(window).mousemove((e) => {
       var r = Math.atan2(this.top - e.pageY, this.left - e.pageX) - Math.PI/2;
       this.rotation = r; // Math.round(r);
+    });
+    $(window).mousedown((e) =>{
+      this.fireBullet();
     });
   }
 

@@ -28,3 +28,11 @@
   display: block;
   color: rgba(255,255,255,.8);
 }
+
+.bullet {
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  background: #fff;
+  position: absolute;
+}
