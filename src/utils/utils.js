@@ -1,4 +1,4 @@
-const NUM_ASTEROIDS = 50;
+const NUM_ASTEROIDS = 0;
 
 export function getAsteroids() {
   const asteroids = [];

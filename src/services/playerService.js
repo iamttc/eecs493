@@ -92,44 +92,6 @@ export class PlayerService {
   }
 
   /**
-   * fire a bullet
-   */
-  fireBullet() {
-    var bullet = {
-      top: this.top,
-      left: this.left,
-      direction: this.rotation,
-      distance: 0
-    };
-
-    // update the bullet location
-    //setInterval(function(){
-    //  this.updateBullet(bullet);
-    //}, 30);
-  }
-
-  /**
-   * update the bullets location
-   */
-  updateBullet(bullet){
-    // if the distance traveled is > 200 end the bullet
-
-    // otherwise move the bullet in the proper direction
-    // and update the distance it has traveled
-
-    // send the updated location to the other players
-    /*
-    socket.emit('update bullet', {
-      playerId: this.playerId,
-      position: {
-        top: bullet.top,
-        left: bullet.left
-      }
-    });
-    */
-  }
-
-  /**
    * watch keypress
    */
   watchMovement() {
@@ -143,7 +105,7 @@ export class PlayerService {
       var r = Math.atan2(this.top - e.pageY, this.left - e.pageX) - Math.PI/2;
       this.rotation = r; // Math.round(r);
     });
-    $(window).mousedown((e) =>{
+    $(window).mousedown((e) => {
       this.fireBullet();
     });
   }
@@ -165,6 +127,21 @@ export class PlayerService {
     if (this.keyDown[RIGHT] && !this.keyDown[LEFT] && this.left < (WORLD_WIDTH - (MOVE_DIST * 2)))
         this.desiredLeft = this.left + MOVE_DIST;
   };
+
+  /**
+   * fire a bullet
+   */
+  fireBullet() {
+    socket.emit('fire bullet', {
+      playerId: this.playerId,
+      position: {
+        direction: this.rotation,
+        top: this.top + 10,
+        left: this.left + 10,
+        distance: 0
+      }
+    });
+  }
 }
 
 export default new PlayerService();
