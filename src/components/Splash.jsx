@@ -16,9 +16,8 @@ const Splash = (props) => {
       <input type="text" className="name input" placeholder="Name" />
       <button className="input" onClick={() => props.initPlayer()}>Play</button>
       <div className="instructions">
-        [Up/Down] to move<br/>
-        [Left/Right] to spin<br/>
-        [Space] to shoot.
+        [W/A/S/D] to move<br/>
+        Click to shoot
       </div>
     </div>
   );
