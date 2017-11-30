@@ -1,8 +1,14 @@
-const NUM_ASTEROIDS = 50;
+/**
+ * players
+ */
+module.exports.players = {};
 
-export function getAsteroids() {
+/**
+ * asteroids
+ */
+function getAsteroids() {
   const asteroids = [];
-  for (var i = 0; i < NUM_ASTEROIDS; i++) {
+  for (var i = 0; i < 50; i++) {
     asteroids.push({
       position: {
         top: Math.floor(Math.random() * (5000 - 500)),
@@ -29,8 +35,14 @@ export function getAsteroids() {
         Math.floor(Math.random()*20)-10,
         Math.floor(Math.random()*20)-10
       ]
-      //spin speed
     });
   }
   return asteroids;
 }
+module.exports.asteroids = getAsteroids();
+
+
+/**
+ * bullets
+ */
+module.exports.bullets = [];
