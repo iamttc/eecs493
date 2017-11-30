@@ -103,9 +103,9 @@ export class PlayerService {
     };
 
     // update the bullet location
-    setInterval(function(){
-      this.updateBullet(bullet);
-    }, 30);
+    //setInterval(function(){
+    //  this.updateBullet(bullet);
+    //}, 30);
   }
 
   /**
