@@ -1,6 +1,6 @@
 var express = require('express');
 var socketIo = require('socket.io');
-var $ = require('jquery');
+var _ = require('lodash');
 
 // constants
 const PORT = process.env.PORT || 8000;
@@ -25,7 +25,7 @@ const asteroids = getAsteroids();
 // bullets
 var bullets = [];
 const updateBullets = () => {
-  bullets.forEach((bullet) => {
+  _.map(bullets, (bullet) => {
     return bullet;
   });
 };
