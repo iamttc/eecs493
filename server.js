@@ -19,7 +19,7 @@ const server = express()
 const io = socketIo(server);
 io.on('connection', (socket) => {
   // send asteroid locations
-  io.emit('asteroids', model.asteroids);
+  io.emit('asteroid locations', model.asteroids);
   // update player location
   socket.on('update location', (data) => {
     model.addPlayer(data);

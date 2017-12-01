@@ -6,12 +6,14 @@ import { Provider } from 'react-redux';
 import Reducer from './redux/reducer';
 import Splash from './components/Splash';
 import Map from './components/Map';
+import AsteroidService from './services/asteroidService';
 
 
 class App extends React.Component {
   constructor() {
     super();
     this.store = createStore(Reducer, composeWithDevTools(applyMiddleware(thunk)));
+    this.store.dispatch(AsteroidService.initAsteroidService());
   }
 
   render() {

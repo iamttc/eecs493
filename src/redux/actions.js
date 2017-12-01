@@ -1,7 +1,8 @@
 import {
   CONTENT_TOGGLE,
   PLAYER_LOCATION,
-  BULLETS
+  BULLETS,
+  ASTEROIDS
 } from './actionTypes';
 
 export const updateContent = (toggle) => ({
@@ -17,4 +18,9 @@ export const updatePlayerLocations = (players) => ({
 export const updateBullets = (bullets) => ({
   type: BULLETS,
   data: bullets
+});
+
+export const updateAsteroids = (asteroids) => ({
+  type: ASTEROIDS,
+  data: asteroids
 });

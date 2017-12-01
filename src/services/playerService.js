@@ -36,6 +36,7 @@ export class PlayerService {
     this.velocity = 10;
   }
 
+
   initPlayerService() {
     return (dispatch) => {
       // get player name
@@ -51,6 +52,7 @@ export class PlayerService {
       dispatch(this.updateOtherPlayers());
     };
   }
+
 
   /**
    * continuously emit the new location of the player
@@ -80,16 +82,6 @@ export class PlayerService {
     });
   }
 
-  /**
-   * update the redux store for all player locations
-   */
-  updateOtherPlayers() {
-    return (dispatch) => {
-      socket.on('player locations', (data) => {
-        dispatch(updatePlayerLocations(data));
-      });
-    }
-  }
 
   /**
    * watch keypress
@@ -110,6 +102,7 @@ export class PlayerService {
     });
   }
 
+
   /**
    * move the character based on keypress
    */
@@ -127,6 +120,19 @@ export class PlayerService {
     if (this.keyDown[RIGHT] && !this.keyDown[LEFT] && this.left < (WORLD_WIDTH - (MOVE_DIST * 2)))
         this.desiredLeft = this.left + MOVE_DIST;
   };
+
+
+  /**
+   * update the redux store for all player locations
+   */
+  updateOtherPlayers() {
+    return (dispatch) => {
+      socket.on('player locations', (data) => {
+        dispatch(updatePlayerLocations(data));
+      });
+    }
+  }
+
 
   /**
    * fire a bullet

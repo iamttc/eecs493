@@ -1,5 +1,4 @@
 import * as actionTypes from './actionTypes';
-import { getAsteroids } from '../utils/utils';
 
 const initState = {
   toggle: {
@@ -8,7 +7,7 @@ const initState = {
   },
   players: {},
   bullets: [],
-  asteroids: getAsteroids()
+  asteroids: []
 };
 
 const Reducer = (state = initState, action) => {
@@ -21,6 +20,9 @@ const Reducer = (state = initState, action) => {
 
     case actionTypes.BULLETS:
       return { ...state, ...{ bullets: action.data } };
+
+    case actionTypes.ASTEROIDS:
+      return { ...state, ...{ asteroids: action.data } };
 
     default:
       return state;
