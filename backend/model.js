@@ -1,7 +1,11 @@
+var _ = require('lodash');
+const INTERVAL = 100;
+
+
 /**
  * players
  */
-module.exports.players = {};
+var players = {};
 
 /**
  * asteroids
@@ -39,10 +43,45 @@ function getAsteroids() {
   }
   return asteroids;
 }
-module.exports.asteroids = getAsteroids();
+const asteroids = getAsteroids();
 
 
 /**
  * bullets
  */
-module.exports.bullets = [];
+var bullets = [];
+const updateBullets = () => {
+  _.map(bullets, (bullet) => {
+    var d = {
+      x: bullet.position.left - bullet.position.init_x,
+      y: bullet.position.top  - bullet.position.init_y
+    };
+    var h = Math.sqrt(d.x * d.x + d.y * d.y);
+    if(h > 480)
+      return null;
+
+    // set top and left to new coordinates
+    var a = bullet.position.direction + Math.PI/2;
+    bullet.position.left = (-32) * Math.cos(a) + bullet.position.left;
+    bullet.position.top = (-32) * Math.sin(a) + bullet.position.top;
+
+    return bullet;
+  });
+  _.reduce(bullets, (bullet) => {
+    return !_.isEmpty(bullet);
+  });
+};
+const addBullet = (bullet) => {
+  bullets.push(bullet);
+};
+setInterval(updateBullets, INTERVAL);
+
+/**
+ * export
+ */
+module.exports = {
+  players: players,
+  asteroids: asteroids,
+  bullets: bullets,
+  addBullet: addBullet
+};

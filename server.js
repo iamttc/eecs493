@@ -1,7 +1,6 @@
 var express = require('express');
 var socketIo = require('socket.io');
-var _ = require('lodash');
-var data = require('./backend/utils');
+var model = require('./backend/model');
 
 
 /**
@@ -9,8 +8,6 @@ var data = require('./backend/utils');
  */
 const PORT = process.env.PORT || 8000;
 const INDEX = __dirname + '/public/index.html';
-const INTERVAL = 100;
-
 const server = express()
   .use((req, res) => res.sendFile(INDEX))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
@@ -22,28 +19,17 @@ const server = express()
 const io = socketIo(server);
 io.on('connection', (socket) => {
   // send asteroid locations
-  io.emit('asteroids', data.asteroids);
+  io.emit('asteroids', model.asteroids);
   // update player location
   socket.on('update location', (data) => {
     io.emit('update location', data);
   });
   // new bullet from player
   socket.on('fire bullet', (data) => {
-    data.bullets.push(data);
+    model.addBullet(data);
   });
   // dispatch bullet locations
   setInterval(() => {
-    io.emit('bullet locations', data.bullets);
-  }, INTERVAL);
+    io.emit('bullet locations', model.bullets);
+  }, 50);
 });
-
-
-/**
- * variable updating
- */
-const updateBullets = () => {
-  _.map(data.bullets, (bullet) => {
-    return bullet;
-  });
-};
-setInterval(updateBullets, INTERVAL);

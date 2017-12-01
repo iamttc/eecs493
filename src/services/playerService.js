@@ -138,7 +138,8 @@ export class PlayerService {
         direction: this.rotation,
         top: this.top + 10,
         left: this.left + 10,
-        distance: 0
+        init_x: this.left + 10,
+        init_y: this.top + 10,
       }
     });
   }
