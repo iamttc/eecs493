@@ -1,5 +1,5 @@
 var _ = require('lodash');
-const INTERVAL = 50;
+const INTERVAL = 45;
 
 
 /**
@@ -7,11 +7,11 @@ const INTERVAL = 50;
  */
 function getAsteroids() {
   const asteroids = [];
-  for (var i = 0; i < 50; i++) {
+  for (var i = 0; i < 20; i++) {
     asteroids.push({
       position: {
-        top: Math.floor(Math.random() * (5000 - 500)),
-        left: Math.floor(Math.random() * (5000 - 500))
+        top: Math.floor(Math.random() * (3000 - 500)),
+        left: Math.floor(Math.random() * (3000 - 500))
       },
       dimension: {
         height: Math.floor(Math.random()*80) + 260,

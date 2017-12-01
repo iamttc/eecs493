@@ -32,5 +32,5 @@ io.on('connection', (socket) => {
   setInterval(() => {
     io.emit('player locations', model.players);
     io.emit('bullet locations', model.bullets);
-  }, 50);
+  }, 45);
 });
