@@ -52,18 +52,22 @@ const asteroids = getAsteroids();
 var bullets = [];
 const updateBullets = () => {
   _.map(bullets, (bullet) => {
+    if(bullet.position.top < 0 && bullet.position.left < 0)
+      return null;
     var d = {
       x: bullet.position.left - bullet.position.init_x,
       y: bullet.position.top  - bullet.position.init_y
     };
     var h = Math.sqrt(d.x * d.x + d.y * d.y);
-    if(h > 480)
-      return null;
-
+    if(h > 480){
+      bullet.position.top = -100;
+      bullet.position.left = -100;
+      return bullet
+    }
     // set top and left to new coordinates
     var a = bullet.position.direction + Math.PI/2;
-    bullet.position.left = (-32) * Math.cos(a) + bullet.position.left;
-    bullet.position.top = (-32) * Math.sin(a) + bullet.position.top;
+    bullet.position.left = (-12) * Math.cos(a) + bullet.position.left;
+    bullet.position.top = (-12) * Math.sin(a) + bullet.position.top;
 
     return bullet;
   });
