@@ -22,14 +22,15 @@ io.on('connection', (socket) => {
   io.emit('asteroids', model.asteroids);
   // update player location
   socket.on('update location', (data) => {
-    io.emit('update location', data);
+    model.addPlayer(data);
   });
   // new bullet from player
   socket.on('fire bullet', (data) => {
     model.addBullet(data);
   });
-  // dispatch bullet locations
+  // dispatch data continuously
   setInterval(() => {
+    io.emit('player locations', model.players);
     io.emit('bullet locations', model.bullets);
   }, 50);
 });

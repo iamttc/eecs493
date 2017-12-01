@@ -9,9 +9,9 @@ export const updateContent = (toggle) => ({
   data: toggle
 });
 
-export const updatePlayerLocation = (player) => ({
+export const updatePlayerLocations = (players) => ({
   type: PLAYER_LOCATION,
-  data: player
+  data: players
 });
 
 export const updateBullets = (bullets) => ({

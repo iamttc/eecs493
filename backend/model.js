@@ -1,11 +1,6 @@
 var _ = require('lodash');
-const INTERVAL = 100;
+const INTERVAL = 50;
 
-
-/**
- * players
- */
-var players = {};
 
 /**
  * asteroids
@@ -43,13 +38,25 @@ function getAsteroids() {
   }
   return asteroids;
 }
+
 const asteroids = getAsteroids();
+
+
+/**
+ * players
+ */
+var players = {};
+
+const addPlayer = (player) => {
+  players[player.playerId] = player.position;
+};
 
 
 /**
  * bullets
  */
 var bullets = [];
+
 const updateBullets = () => {
   _.map(bullets, (bullet) => {
     if(bullet.position.top < 0 && bullet.position.left < 0)
@@ -75,17 +82,22 @@ const updateBullets = () => {
     return !_.isEmpty(bullet);
   });
 };
+
 const addBullet = (bullet) => {
   bullets.push(bullet);
 };
+
 setInterval(updateBullets, INTERVAL);
 
 /**
  * export
  */
 module.exports = {
-  players: players,
   asteroids: asteroids,
+
+  players: players,
+  addPlayer: addPlayer,
+
   bullets: bullets,
   addBullet: addBullet
 };

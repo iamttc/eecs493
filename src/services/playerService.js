@@ -1,5 +1,5 @@
 import { $, socket } from './baseService';
-import { updatePlayerLocation, updateContent } from '../redux/actions';
+import { updatePlayerLocations, updateContent } from '../redux/actions';
 
 // constants
 const UP = 87;
@@ -85,8 +85,8 @@ export class PlayerService {
    */
   updateOtherPlayers() {
     return (dispatch) => {
-      socket.on('update location', (data) => {
-        dispatch(updatePlayerLocation(data));
+      socket.on('player locations', (data) => {
+        dispatch(updatePlayerLocations(data));
       });
     }
   }

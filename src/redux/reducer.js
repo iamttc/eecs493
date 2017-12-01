@@ -17,9 +17,7 @@ const Reducer = (state = initState, action) => {
       return { ...state, ...{ toggle: action.data } };
 
     case actionTypes.PLAYER_LOCATION:
-      const players = { ...state.players };
-      players[action.data.playerId] = action.data.position;
-      return { ...state, ...{ players } };
+      return { ...state, ...{ players: action.data } };
 
     case actionTypes.BULLETS:
       return { ...state, ...{ bullets: action.data } };
