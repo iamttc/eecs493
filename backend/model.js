@@ -58,28 +58,28 @@ const addPlayer = (player) => {
 var bullets = [];
 
 const updateBullets = () => {
-  _.map(bullets, (bullet) => {
-    if(bullet.position.top < 0 && bullet.position.left < 0)
-      return null;
+  _.each(bullets, (bullet) => {
     var d = {
       x: bullet.position.left - bullet.position.init_x,
       y: bullet.position.top  - bullet.position.init_y
     };
     var h = Math.sqrt(d.x * d.x + d.y * d.y);
-    if(h > 480){
+    // move off screen
+    if (h > 480) {
       bullet.position.top = -100;
       bullet.position.left = -100;
-      return bullet
+      return bullet;
     }
     // set top and left to new coordinates
-    var a = bullet.position.direction + Math.PI/2;
-    bullet.position.left = (-12) * Math.cos(a) + bullet.position.left;
-    bullet.position.top = (-12) * Math.sin(a) + bullet.position.top;
-
-    return bullet;
+    else {
+      var a = bullet.position.direction + Math.PI/2;
+      bullet.position.left = (-12) * Math.cos(a) + bullet.position.left;
+      bullet.position.top = (-12) * Math.sin(a) + bullet.position.top;
+      return bullet;
+    }
   });
-  _.reduce(bullets, (bullet) => {
-    return !_.isEmpty(bullet);
+  _.remove(bullets, (bullet) => {
+    return bullet.position.top < 0 && bullet.position.left < 0;
   });
 };
 
@@ -88,6 +88,23 @@ const addBullet = (bullet) => {
 };
 
 setInterval(updateBullets, INTERVAL);
+
+/**
+ * collisions
+ */
+const checkCollisions = () => {
+  _.each(bullets, (bullet) => {
+    _.each(players, (position, playerId) => {
+      if (bullet.playerId === playerId)
+        return;
+      if (Math.abs(bullet.top - bullet.top) < 20 && Math.abs(bullet.left - bullet.left) < 20)
+        console.log('hit');
+    });
+  });
+};
+
+setInterval(checkCollisions, 5000);
+
 
 /**
  * export

@@ -6,7 +6,7 @@ var model = require('./backend/model');
 /**
  * server stuff
  */
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8080;
 const INDEX = __dirname + '/public/index.html';
 const server = express()
   .use((req, res) => res.sendFile(INDEX))
@@ -32,5 +32,5 @@ io.on('connection', (socket) => {
   setInterval(() => {
     io.emit('player locations', model.players);
     io.emit('bullet locations', model.bullets);
-  }, 45);
+  }, 32);
 });

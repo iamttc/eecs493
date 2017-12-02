@@ -152,10 +152,12 @@ export class PlayerService {
     return (dispatch) => {
       socket.on('player locations', (data) => {
         dispatch(updatePlayerLocations(data));
-        window.scrollTo(
-          data[this.playerId].left - (window.innerWidth / 2),
-          data[this.playerId].top - (window.innerHeight / 2)
-        );
+        if (data[this.playerId]) {
+          window.scrollTo(
+            data[this.playerId].left - (window.innerWidth / 2),
+            data[this.playerId].top - (window.innerHeight / 2)
+          );
+        }
       });
     }
   }
