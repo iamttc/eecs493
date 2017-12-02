@@ -136,10 +136,10 @@ export class PlayerService {
       playerId: this.playerId,
       position: {
         direction: this.rotation,
-        top: this.top + BULLET_SPEED,
-        left: this.left + BULLET_SPEED,
-        init_x: this.left + BULLET_SPEED,
-        init_y: this.top + BULLET_SPEED,
+        top: this.top,
+        left: this.left,
+        init_x: this.left,
+        init_y: this.top,
       }
     });
   }

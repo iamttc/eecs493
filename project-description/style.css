@@ -1,0 +1,28 @@
+nav.navbar {
+	font-family: "Montserrat", sans-serif;
+	border-radius: 0px;
+}
+nav.navbar-header div.container-fluid {
+	border-radius: 0px;
+}
+nav.navbar-header div.container-fluid div.navbar-header {
+	border-radius: 0px;
+}
+div#carousel{
+	font-family: "Montserrat", sans-serif;
+	margin-top: -20px;
+}
+div.carousel-inner div.item {
+	height: 600px;
+}
+div.carousel-inner div.item#c-1 {
+	background: url("splash.jpg");
+	background-position: center;
+	background-size: 100%;
+}
+div.container {
+	font-family: "Montserrat", sans-serif;
+}
+footer {
+	font-family: "Montserrat", sans-serif;
+}

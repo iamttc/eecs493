@@ -1,6 +1,7 @@
 .bullet {
   position: absolute;
-  height: 3px;
-  width: 3px;
+  height: 6px;
+  width: 6px;
   background-color: white;
+  border-radius: 3px;
 }

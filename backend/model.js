@@ -97,13 +97,19 @@ const checkCollisions = () => {
     _.each(players, (position, playerId) => {
       if (bullet.playerId === playerId)
         return;
-      if (Math.abs(bullet.top - bullet.top) < 20 && Math.abs(bullet.left - bullet.left) < 20)
+      var d = {
+        x: bullet.position.left - position.left,
+        y: bullet.position.top  - position.top
+      };
+      var h = Math.sqrt(d.x * d.x + d.y * d.y);
+      console.log(playerId, h);
+      if(h < 30)
         console.log('hit');
     });
   });
 };
 
-setInterval(checkCollisions, 5000);
+setInterval(checkCollisions, 32);
 
 
 /**
