@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { $, socket } from './baseService';
 import { updatePlayerLocations, updateContent } from '../redux/actions';
 
@@ -9,7 +10,6 @@ const RIGHT = 68;
 
 const UPDATE_RATE = 15;
 const MOVE_DIST = 5;
-const BULLET_SPEED = 5;
 
 const WORLD_HEIGHT = 3000;
 const WORLD_WIDTH = 3000;
@@ -17,15 +17,12 @@ const WORLD_WIDTH = 3000;
 
 export class PlayerService {
   constructor() {
+    this.alive = true;
     this.keyDown = {
       87: false, // up
       83: false, // down
       65: false, // left
       68: false  // right
-    };
-    this.playContentToggle = {
-      splash: false,
-      map: true
     };
 
     // positioning
@@ -46,7 +43,7 @@ export class PlayerService {
       this.playerId = $('.name').val();
 
       // update redux store
-      dispatch(updateContent(this.playContentToggle));
+      dispatch(updateContent({splash: false, map: true}));
 
       // continuously update locations
       this.watchMovement();
@@ -73,15 +70,16 @@ export class PlayerService {
     //   this.top = (-v) * Math.cos(a) + this.top;
     //   this.left = (-v) * Math.sin(a) + this.left;
     // }
-
-    socket.emit('update location', {
-      playerId: this.playerId,
-      position: {
-        rotation: this.rotation,
-        top: this.top,
-        left: this.left
-      }
-    });
+    if (this.alive) {
+      socket.emit('update location', {
+        playerId: this.playerId,
+        position: {
+          rotation: this.rotation,
+          top: this.top,
+          left: this.left
+        }
+      });
+    }
   }
 
 
@@ -153,9 +151,14 @@ export class PlayerService {
       socket.on('player locations', (data) => {
         dispatch(updatePlayerLocations(data));
         if (data[this.playerId]) {
+          const p = data[this.playerId];
+          if ('alive' in p && !p.alive) {
+            this.alive = false;
+            dispatch(updateContent({splash: true, map: false}));
+          }
           window.scrollTo(
-            data[this.playerId].left - (window.innerWidth / 2),
-            data[this.playerId].top - (window.innerHeight / 2)
+            p.left - (window.innerWidth / 2),
+            p.top - (window.innerHeight / 2)
           );
         }
       });

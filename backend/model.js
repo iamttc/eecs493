@@ -43,12 +43,30 @@ const asteroids = getAsteroids();
 
 
 /**
+ * scores
+ */
+var scores = {};
+
+
+/**
+ * deaths
+ */
+var dead_players = {};
+
+
+/**
  * players
  */
 var players = {};
 
+const checkNewPlayer = (playerId) => {
+  if (_.isEmpty(players[playerId].score))
+    players[playerId].score = 0;
+};
+
 const addPlayer = (player) => {
-  players[player.playerId] = player.position;
+  players[player.playerId] = Object.assign({}, players[player.playerId], player.position);
+  checkNewPlayer(player.playerId);
 };
 
 
@@ -92,7 +110,7 @@ setInterval(updateBullets, INTERVAL);
 /**
  * collisions
  */
-const checkCollisions = () => {
+const checkCollisions = () => {  
   _.each(bullets, (bullet) => {
     _.each(players, (position, playerId) => {
       if (bullet.playerId === playerId)
@@ -102,14 +120,25 @@ const checkCollisions = () => {
         y: bullet.position.top  - position.top
       };
       var h = Math.sqrt(d.x * d.x + d.y * d.y);
-      console.log(playerId, h);
-      if(h < 30)
-        console.log('hit');
+
+      // kill and add score
+      if (h < 30) {
+        players[bullet.playerId].score += 1;
+        players[playerId].alive = false;
+      }
     });
   });
 };
 
 setInterval(checkCollisions, 32);
+
+setInterval(() => {
+  console.log(players);
+  _.each(players, (data, playerId) => {
+    if ('alive' in data && data.alive === false)
+      delete players[playerId];
+  });
+}, 1000);
 
 
 /**
