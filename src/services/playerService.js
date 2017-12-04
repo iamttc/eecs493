@@ -34,23 +34,58 @@ export class PlayerService {
 
     this.rotation = 0;
     this.velocity = 10;
+
+    this.locationInterval = null;
+    this.moveInterval = null;
+    this.playerId = '';
+  }
+
+  /**
+   * sets window listers and socket emits
+   */
+  startService() {
+    return (dispatch) => {
+      // set content
+      this.playerId = $('.name').val();
+      dispatch(updateContent({splash: false, map: true}));
+
+      // set emitters and listeners
+      this.watchMovement();
+      this.locationInterval = setInterval(this.updateLocation, UPDATE_RATE);
+      this.moveInterval = setInterval(this.moveCharacter, UPDATE_RATE);
+      dispatch(this.updateOtherPlayers());
+
+      // handle page navigation away
+      window.onbeforeunload = () => {
+        dispatch(this.endService());
+      };
+    };
   }
 
 
-  initPlayerService() {
+  /**
+   * stops all intervals - no longer emits
+   * removes socket listeners
+   */
+  endService() {
     return (dispatch) => {
-      // get player name
-      this.playerId = $('.name').val();
+      $(window).off();
+      this.locationInterval = null;
+      this.moveInterval = null;
+      socket.removeAllListeners('player locations');
 
-      // update redux store
-      dispatch(updateContent({splash: false, map: true}));
-
-      // continuously update locations
-      this.watchMovement();
-      setInterval(this.updateLocation, UPDATE_RATE);
-      setInterval(this.moveCharacter, UPDATE_RATE);
-      dispatch(this.updateOtherPlayers());
+      // reset redux store
+      dispatch(updateContent({splash: true, map: false}));
+      dispatch(updatePlayerLocations({}));
     };
+  }
+
+
+  /**
+   * @returns {string} playerId
+   */
+  getName() {
+    return this.playerId;
   }
 
 
@@ -58,18 +93,18 @@ export class PlayerService {
    * continuously emit the new location of the player
    */
   updateLocation = () => {
-    // var d = {
-    //   x: this.left - this.desiredLeft,
-    //   y: this.top - this.desiredTop,
-    // };
+    var d = {
+      x: this.left - this.desiredLeft,
+      y: this.top - this.desiredTop,
+    };
 
-    // if (Math.abs(d.x) > 12 || Math.abs(d.y) > 12){
-    //   var h = Math.sqrt(Math.pow(d.x,2) + Math.pow(d.y,2));
-    //   var a = Math.atan2(d.x, d.y);
-    //   var v = h / 100 * this.velocity;
-    //   this.top = (-v) * Math.cos(a) + this.top;
-    //   this.left = (-v) * Math.sin(a) + this.left;
-    // }
+    if (Math.abs(d.x) > 12 || Math.abs(d.y) > 12){
+      var h = Math.sqrt(Math.pow(d.x,2) + Math.pow(d.y,2));
+      var a = Math.atan2(d.x, d.y);
+      var v = h / 100 * this.velocity;
+      this.top = (-v) * Math.cos(a) + this.top;
+      this.left = (-v) * Math.sin(a) + this.left;
+    }
     if (this.alive) {
       socket.emit('update location', {
         playerId: this.playerId,
@@ -109,20 +144,16 @@ export class PlayerService {
   moveCharacter = () => {
     // move up
     if (this.keyDown[UP] && !this.keyDown[DOWN] && this.top > (0 + MOVE_DIST))
-        // this.desiredTop = this.top - MOVE_DIST;
-        this.top -= MOVE_DIST;
+        this.desiredTop = this.top - MOVE_DIST;
     // move down
     if (this.keyDown[DOWN] && !this.keyDown[UP] && this.top < (WORLD_HEIGHT - (MOVE_DIST * 2)))
-        // this.desiredTop = this.top + MOVE_DIST;
-        this.top += MOVE_DIST;
+        this.desiredTop = this.top + MOVE_DIST;
     // move left
     if (this.keyDown[LEFT] && !this.keyDown[RIGHT] && this.left > (0 + MOVE_DIST))
-        // this.desiredLeft = this.left - MOVE_DIST;
-        this.left -= MOVE_DIST;
+        this.desiredLeft = this.left - MOVE_DIST;
     // move right
     if (this.keyDown[RIGHT] && !this.keyDown[LEFT] && this.left < (WORLD_WIDTH - (MOVE_DIST * 2)))
-        // this.desiredLeft = this.left + MOVE_DIST;
-        this.left += MOVE_DIST;
+        this.desiredLeft = this.left + MOVE_DIST;
   };
 
 
@@ -152,14 +183,14 @@ export class PlayerService {
         dispatch(updatePlayerLocations(data));
         if (data[this.playerId]) {
           const p = data[this.playerId];
-          if ('alive' in p && !p.alive) {
-            this.alive = false;
-            dispatch(updateContent({splash: true, map: false}));
+          if ('alive' in p && !p.alive)
+            dispatch(this.endService());
+          else {
+            window.scrollTo(
+              p.left - (window.innerWidth / 2),
+              p.top - (window.innerHeight / 2)
+            );
           }
-          window.scrollTo(
-            p.left - (window.innerWidth / 2),
-            p.top - (window.innerHeight / 2)
-          );
         }
       });
     }
