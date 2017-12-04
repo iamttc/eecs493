@@ -7,20 +7,22 @@ import Reducer from './redux/reducer';
 import Splash from './components/Splash';
 import Map from './components/Map';
 import AsteroidService from './services/asteroidService';
+import PlayerService from './services/playerService';
+import BulletService from './services/bulletService';
 
 
 class App extends React.Component {
   constructor() {
     super();
     this.store = createStore(Reducer, composeWithDevTools(applyMiddleware(thunk)));
-    this.store.dispatch(AsteroidService.initAsteroidService());
+    this.store.dispatch(AsteroidService.startService());
   }
 
   render() {
     return (
       <Provider store={this.store}>
         <div className="app">
-          <Splash />
+          <Splash playerService={PlayerService} bulletService={BulletService} />
           <Map />
         </div>
       </Provider>

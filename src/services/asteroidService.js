@@ -2,7 +2,7 @@ import { socket } from './baseService';
 import { updateAsteroids } from '../redux/actions';
 
 export class AsteroidService {
-  initAsteroidService() {
+  startService() {
     return (dispatch) => {
       socket.on('asteroid locations', (data) => {
         dispatch(updateAsteroids(data));

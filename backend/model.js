@@ -1,5 +1,5 @@
 var _ = require('lodash');
-const INTERVAL = 45;
+const INTERVAL = 32;
 
 
 /**
@@ -47,17 +47,36 @@ const asteroids = getAsteroids();
  */
 var players = {};
 
-const addPlayer = (player) => {
-  players[player.playerId] = player.position;
+const checkNewPlayer = (playerId) => {
+  if (_.isEmpty(players[playerId].score))
+    players[playerId].score = 0;
 };
+
+const addPlayer = (player) => {
+  players[player.playerId] = Object.assign({}, players[player.playerId], player.position);
+  checkNewPlayer(player.playerId);
+};
+
+setInterval(() => {
+  console.log(players);
+  _.each(players, (data, playerId) => {
+    if ('alive' in data && data.alive === false)
+      delete players[playerId];
+  });
+}, 1000);
+
 
 
 /**
- * bullets
+ * update bullets
  */
 var bullets = [];
 
-const updateBullets = () => {
+const addBullet = (bullet) => {
+  bullets.push(bullet);
+};
+
+setInterval(() => {
   _.each(bullets, (bullet) => {
     var d = {
       x: bullet.position.left - bullet.position.init_x,
@@ -81,18 +100,13 @@ const updateBullets = () => {
   _.remove(bullets, (bullet) => {
     return bullet.position.top < 0 && bullet.position.left < 0;
   });
-};
+}, INTERVAL);
 
-const addBullet = (bullet) => {
-  bullets.push(bullet);
-};
-
-setInterval(updateBullets, INTERVAL);
 
 /**
- * collisions
+ * check for collisions
  */
-const checkCollisions = () => {
+setInterval(() => {  
   _.each(bullets, (bullet) => {
     _.each(players, (position, playerId) => {
       if (bullet.playerId === playerId)
@@ -102,13 +116,15 @@ const checkCollisions = () => {
         y: bullet.position.top  - position.top
       };
       var h = Math.sqrt(d.x * d.x + d.y * d.y);
-      if(h < 30)
-        console.log('hit');
+
+      // kill and add score
+      if (h < 30) {
+        players[bullet.playerId].score += 1;
+        players[playerId].alive = false;
+      }
     });
   });
-};
-
-setInterval(checkCollisions, 32);
+}, INTERVAL);
 
 
 /**
