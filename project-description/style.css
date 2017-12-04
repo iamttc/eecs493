@@ -15,8 +15,18 @@ div#carousel{
 div.carousel-inner div.item {
 	height: 600px;
 }
-div.carousel-inner div.item#c-1 {
+div.carousel-inner div.item#c-0 {
 	background: url("splash.jpg");
+	background-position: center;
+	background-size: 100%;
+}
+div.carousel-inner div.item#c-1 {
+	background: url("c1.png");
+	background-position: center;
+	background-size: 100%;
+}
+div.carousel-inner div.item#c-2 {
+	background: url("c2.png");
 	background-position: center;
 	background-size: 100%;
 }

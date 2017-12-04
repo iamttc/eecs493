@@ -4,6 +4,7 @@
   -ms-transform: translate(-50%, -10px);
   -webkit-transform: translate(-50%, -10px);
   transform: translate(-50%, -10px);
+  z-index: 9;
 }
 
 .ship-wrapper {

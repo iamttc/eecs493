@@ -102,7 +102,6 @@ const checkCollisions = () => {
         y: bullet.position.top  - position.top
       };
       var h = Math.sqrt(d.x * d.x + d.y * d.y);
-      console.log(playerId, h);
       if(h < 30)
         console.log('hit');
     });

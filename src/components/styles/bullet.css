@@ -4,4 +4,5 @@
   width: 6px;
   background-color: white;
   border-radius: 3px;
+  z-index:5;
 }
