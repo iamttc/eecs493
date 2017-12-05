@@ -33,6 +33,9 @@ div.carousel-inner div.item#c-2 {
 div.container {
 	font-family: "Montserrat", sans-serif;
 }
-footer {
+footer p {
 	font-family: "Montserrat", sans-serif;
+}
+.row p {
+	text-align: left;
 }
