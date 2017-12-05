@@ -17,13 +17,6 @@ const WORLD_WIDTH = 3000;
 
 export class PlayerService {
   constructor() {
-    this.keyDown = {
-      87: false, // up
-      83: false, // down
-      65: false, // left
-      68: false  // right
-    };
-
     this.rotation = 0;
     this.velocity = 10;
 
@@ -42,6 +35,12 @@ export class PlayerService {
       // positioning
       this.top = Math.floor(Math.random() * WORLD_HEIGHT - 100) + 50;
       this.left = Math.floor(Math.random() * WORLD_WIDTH - 100) + 50;
+      this.keyDown = {
+        87: false, // up
+        83: false, // down
+        65: false, // left
+        68: false  // right
+      };
 
       // set content
       this.playerId = $('.name').val();
