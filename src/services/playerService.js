@@ -24,19 +24,13 @@ export class PlayerService {
       68: false  // right
     };
 
-    // positioning
-    this.top = Math.floor(Math.random() * WORLD_HEIGHT - 100) + 50;
-    this.left = Math.floor(Math.random() * WORLD_WIDTH - 100) + 50;
-
-    this.desiredTop = this.top;
-    this.desiredLeft = this.left;
-
     this.rotation = 0;
     this.velocity = 10;
 
     this.locationInterval = null;
     this.moveInterval = null;
     this.playerId = '';
+    this.score = null;
   }
 
 
@@ -45,6 +39,10 @@ export class PlayerService {
    */
   startService() {
     return (dispatch) => {
+      // positioning
+      this.top = Math.floor(Math.random() * WORLD_HEIGHT - 100) + 50;
+      this.left = Math.floor(Math.random() * WORLD_WIDTH - 100) + 50;
+
       // set content
       this.playerId = $('.name').val();
       dispatch(updateContent({splash: false, map: true}));
@@ -88,25 +86,15 @@ export class PlayerService {
   getName() {
     return this.playerId;
   }
+  getScore() {
+    return this.score;
+  }
 
 
   /**
    * continuously emit the new location of the player
    */
   updateLocation = () => {
-    // var d = {
-    //   x: this.left - this.desiredLeft,
-    //   y: this.top - this.desiredTop,
-    // };
-    // if (Math.abs(d.x) > 12 || Math.abs(d.y) > 12){
-    //   var h = Math.sqrt(Math.pow(d.x,2) + Math.pow(d.y,2));
-    //   var a = Math.atan2(d.x, d.y);
-    //   var v = h / 100 * this.velocity;
-    //   this.top = (-v) * Math.cos(a) + this.top;
-    //   this.left = (-v) * Math.sin(a) + this.left;
-    // }
-    this.top = this.desiredTop;
-    this.left = this.desiredLeft;
     socket.emit('update location', {
       playerId: this.playerId,
       position: {
@@ -143,18 +131,17 @@ export class PlayerService {
    */
   moveCharacter = () => {
     // move up
-    if (this.keyDown[UP] && !this.keyDown[DOWN] && this.top > (2 * MOVE_DIST)) {
-      this.desiredTop = this.top - MOVE_DIST;
-    }
+    if (this.keyDown[UP] && !this.keyDown[DOWN] && this.top > (2 * MOVE_DIST))
+      this.top -= MOVE_DIST;
     // move down
     if (this.keyDown[DOWN] && !this.keyDown[UP] && this.top < (WORLD_HEIGHT - 30))
-      this.desiredTop = this.top + MOVE_DIST;
+      this.top += MOVE_DIST;
     // move left
     if (this.keyDown[LEFT] && !this.keyDown[RIGHT] && this.left > (2 * MOVE_DIST))
-      this.desiredLeft = this.left - MOVE_DIST;
+      this.left -= MOVE_DIST;
     // move right
     if (this.keyDown[RIGHT] && !this.keyDown[LEFT] && this.left < (WORLD_WIDTH - 30))
-      this.desiredLeft = this.left + MOVE_DIST;
+      this.left += MOVE_DIST;
   };
 
 
@@ -184,8 +171,10 @@ export class PlayerService {
         dispatch(updatePlayerLocations(data));
         if (data[this.playerId]) {
           const p = data[this.playerId];
-          if ('alive' in p && !p.alive)
+          if ('alive' in p && !p.alive) {
+            this.score = p.score;
             dispatch(this.endService());
+          }
           else {
             window.scrollTo(
               p.left - (window.innerWidth / 2),

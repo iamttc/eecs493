@@ -9,11 +9,14 @@ const Splash = (props) => {
   if (!_.isEmpty(props.toggle) && !props.toggle.splash)
     return null;
 
-  // get player name if there is one
+  // get player name and score if exists
   const id = props.playerService.getName();
+  const score = props.playerService.getScore();
 
   return (
     <div className="splash">
+
+      {/* name input */}
       <input
         type="text"
         className="name input"
@@ -22,10 +25,16 @@ const Splash = (props) => {
         onKeyDown={(e) => props.checkSubmit(props, e)}
       />
       <button className="input" onClick={() => props.init(props)}>Play</button>
+
+      {/* show score or instructions */}
       <div className="instructions">
-        [W/A/S/D] to move<br/>
-        Click to shoot
+        {score != null
+          ? <p>Score: {score}</p>
+          : <div><p>[W/A/S/D] to move</p>
+            <p>Click to shoot</p></div>
+        }
       </div>
+
     </div>
   );
 };
