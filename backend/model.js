@@ -124,15 +124,6 @@ setInterval(() => {
 
 
 /**
- * logging
- */
-setInterval(() => {
-  console.log(players);
-  console.log(bullets);
-}, 5000);
-
-
-/**
  * export
  */
 module.exports = {
