@@ -1,0 +1,43 @@
+.scores {
+  z-index: 100;
+  padding: 20px 10px;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  height: auto;
+  width: 200px;
+  color: white;
+  background: rgba(0,0,0,0.6);
+
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
+}
+
+.scores p {
+  text-align: center;
+}
+
+.scores hr {
+  margin: 5px;
+  border: 0;
+  height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.scores ol {
+  margin: 0 5px 0 20px;
+}
+
+.scores li {
+  list-style-type: decimal;
+  font-size: 0.8em;
+}
+
+.scores .right {
+  float: right
+}

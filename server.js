@@ -13,7 +13,7 @@ const server = express()
     res.sendFile(INDEX)
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
   })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));

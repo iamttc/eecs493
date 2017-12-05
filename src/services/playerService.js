@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { $, socket } from './baseService';
 import { updatePlayerLocations, updateContent } from '../redux/actions';
 import bulletService from '../services/bulletService';

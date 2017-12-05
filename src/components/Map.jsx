@@ -3,6 +3,7 @@ import React from 'react';
 import Player from './Player';
 import Asteroid from './Asteroid';
 import Bullet from './Bullet';
+import Scores from './Scores';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import './styles/map.css';
@@ -31,6 +32,7 @@ const Map = (props) => {
   // return updated map
   return (
     <div className="map">
+      <Scores players={props.players} />
       {asteroids}
       {players}
       {bullets}

@@ -1,9 +1,9 @@
+import $ from 'jquery';
 import React from 'react';
 import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import $ from 'jquery';
 import Reducer from './redux/reducer';
 import Splash from './components/Splash';
 import Map from './components/Map';
@@ -25,8 +25,13 @@ class App extends React.Component {
     };
 
     // wakeup backend server
-    $.get("http://space-fighters-backend.herokuapp.com/", (data, status) => {
-      console.log(status, data);
+    $.ajax({
+      type: "GET",
+      contentType: "application/json; charset=UTF-8",
+      url: "http://space-fighters-backend.herokuapp.com/",
+      success: function(data){
+        console.log(data);
+      }
     });
   }
 
