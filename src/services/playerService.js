@@ -143,17 +143,17 @@ export class PlayerService {
    */
   moveCharacter = () => {
     // move up
-    if (this.keyDown[UP] && !this.keyDown[DOWN] && this.top > (0 + MOVE_DIST)) {
+    if (this.keyDown[UP] && !this.keyDown[DOWN] && this.top > (2 * MOVE_DIST)) {
       this.desiredTop = this.top - MOVE_DIST;
     }
     // move down
-    if (this.keyDown[DOWN] && !this.keyDown[UP] && this.top < (WORLD_HEIGHT - (MOVE_DIST * 2)))
+    if (this.keyDown[DOWN] && !this.keyDown[UP] && this.top < (WORLD_HEIGHT - 30))
       this.desiredTop = this.top + MOVE_DIST;
     // move left
-    if (this.keyDown[LEFT] && !this.keyDown[RIGHT] && this.left > (0 + MOVE_DIST))
+    if (this.keyDown[LEFT] && !this.keyDown[RIGHT] && this.left > (2 * MOVE_DIST))
       this.desiredLeft = this.left - MOVE_DIST;
     // move right
-    if (this.keyDown[RIGHT] && !this.keyDown[LEFT] && this.left < (WORLD_WIDTH - (MOVE_DIST * 2)))
+    if (this.keyDown[RIGHT] && !this.keyDown[LEFT] && this.left < (WORLD_WIDTH - 30))
       this.desiredLeft = this.left + MOVE_DIST;
   };
 

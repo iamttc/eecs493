@@ -3,7 +3,6 @@
   -webkit-clip-path: polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%);
   clip-path: polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%);
   background: rgb(80, 95, 79);
-  /* background-image: url('img/darkness.png'); */
   z-index: 10;
   -webkit-animation: spin 20s linear infinite;
   -moz-animation: spin 20s linear infinite;
