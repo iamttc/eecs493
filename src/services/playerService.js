@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { $, socket } from './baseService';
 import { updatePlayerLocations, updateContent } from '../redux/actions';
+import bulletService from '../services/bulletService';
 
 // constants
 const UP = 87;
@@ -17,7 +18,6 @@ const WORLD_WIDTH = 3000;
 
 export class PlayerService {
   constructor() {
-    this.alive = true;
     this.keyDown = {
       87: false, // up
       83: false, // down
@@ -26,8 +26,8 @@ export class PlayerService {
     };
 
     // positioning
-    this.top = Math.floor(Math.random() * WORLD_HEIGHT - 100) + 10;
-    this.left = Math.floor(Math.random() * WORLD_WIDTH - 100) + 10;
+    this.top = Math.floor(Math.random() * WORLD_HEIGHT - 100) + 50;
+    this.left = Math.floor(Math.random() * WORLD_WIDTH - 100) + 50;
 
     this.desiredTop = this.top;
     this.desiredLeft = this.left;
@@ -39,6 +39,7 @@ export class PlayerService {
     this.moveInterval = null;
     this.playerId = '';
   }
+
 
   /**
    * sets window listers and socket emits
@@ -54,11 +55,6 @@ export class PlayerService {
       this.locationInterval = setInterval(this.updateLocation, UPDATE_RATE);
       this.moveInterval = setInterval(this.moveCharacter, UPDATE_RATE);
       dispatch(this.updateOtherPlayers());
-
-      // handle page navigation away
-      window.onbeforeunload = () => {
-        dispatch(this.endService());
-      };
     };
   }
 
@@ -70,13 +66,17 @@ export class PlayerService {
   endService() {
     return (dispatch) => {
       $(window).off();
-      this.locationInterval = null;
-      this.moveInterval = null;
+      clearInterval(this.locationInterval);
+      clearInterval(this.moveInterval);
       socket.removeAllListeners('player locations');
+      bulletService.endService();
 
       // reset redux store
       dispatch(updateContent({splash: true, map: false}));
       dispatch(updatePlayerLocations({}));
+
+      // kill player on server
+      socket.emit('kill player', { playerId: this.playerId });
     };
   }
 
@@ -93,28 +93,27 @@ export class PlayerService {
    * continuously emit the new location of the player
    */
   updateLocation = () => {
-    var d = {
-      x: this.left - this.desiredLeft,
-      y: this.top - this.desiredTop,
-    };
-
-    if (Math.abs(d.x) > 12 || Math.abs(d.y) > 12){
-      var h = Math.sqrt(Math.pow(d.x,2) + Math.pow(d.y,2));
-      var a = Math.atan2(d.x, d.y);
-      var v = h / 100 * this.velocity;
-      this.top = (-v) * Math.cos(a) + this.top;
-      this.left = (-v) * Math.sin(a) + this.left;
-    }
-    if (this.alive) {
-      socket.emit('update location', {
-        playerId: this.playerId,
-        position: {
-          rotation: this.rotation,
-          top: this.top,
-          left: this.left
-        }
-      });
-    }
+    // var d = {
+    //   x: this.left - this.desiredLeft,
+    //   y: this.top - this.desiredTop,
+    // };
+    // if (Math.abs(d.x) > 12 || Math.abs(d.y) > 12){
+    //   var h = Math.sqrt(Math.pow(d.x,2) + Math.pow(d.y,2));
+    //   var a = Math.atan2(d.x, d.y);
+    //   var v = h / 100 * this.velocity;
+    //   this.top = (-v) * Math.cos(a) + this.top;
+    //   this.left = (-v) * Math.sin(a) + this.left;
+    // }
+    this.top = this.desiredTop;
+    this.left = this.desiredLeft;
+    socket.emit('update location', {
+      playerId: this.playerId,
+      position: {
+        rotation: this.rotation,
+        top: this.top,
+        left: this.left
+      }
+    });
   }
 
 
@@ -143,17 +142,18 @@ export class PlayerService {
    */
   moveCharacter = () => {
     // move up
-    if (this.keyDown[UP] && !this.keyDown[DOWN] && this.top > (0 + MOVE_DIST))
-        this.desiredTop = this.top - MOVE_DIST;
+    if (this.keyDown[UP] && !this.keyDown[DOWN] && this.top > (0 + MOVE_DIST)) {
+      this.desiredTop = this.top - MOVE_DIST;
+    }
     // move down
     if (this.keyDown[DOWN] && !this.keyDown[UP] && this.top < (WORLD_HEIGHT - (MOVE_DIST * 2)))
-        this.desiredTop = this.top + MOVE_DIST;
+      this.desiredTop = this.top + MOVE_DIST;
     // move left
     if (this.keyDown[LEFT] && !this.keyDown[RIGHT] && this.left > (0 + MOVE_DIST))
-        this.desiredLeft = this.left - MOVE_DIST;
+      this.desiredLeft = this.left - MOVE_DIST;
     // move right
     if (this.keyDown[RIGHT] && !this.keyDown[LEFT] && this.left < (WORLD_WIDTH - (MOVE_DIST * 2)))
-        this.desiredLeft = this.left + MOVE_DIST;
+      this.desiredLeft = this.left + MOVE_DIST;
   };
 
 

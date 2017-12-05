@@ -57,12 +57,12 @@ const addPlayer = (player) => {
   checkNewPlayer(player.playerId);
 };
 
+const killPlayer = (player) => {
+  delete players[player.playerId];
+};
+
 setInterval(() => {
   console.log(players);
-  _.each(players, (data, playerId) => {
-    if ('alive' in data && data.alive === false)
-      delete players[playerId];
-  });
 }, 1000);
 
 
@@ -135,6 +135,7 @@ module.exports = {
 
   players: players,
   addPlayer: addPlayer,
+  killPlayer: killPlayer,
 
   bullets: bullets,
   addBullet: addBullet

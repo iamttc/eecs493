@@ -34,6 +34,10 @@ io.on('connection', (socket) => {
   socket.on('fire bullet', (data) => {
     model.addBullet(data);
   });
+  // remove player from game
+  socket.on('kill player', (data) => {
+    model.killPlayer(data);
+  });
   // dispatch data continuously
   setInterval(() => {
     io.emit('player locations', model.players);
