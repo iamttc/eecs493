@@ -11,7 +11,10 @@ export class BulletService {
   }
 
   endService() {
-    socket.removeAllListeners('bullet locations');
+    return (dispatch) => {
+      socket.removeAllListeners('bullet locations');
+      dispatch(updateBullets([]));
+    };
   }
 }
 

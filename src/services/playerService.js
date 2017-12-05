@@ -69,7 +69,9 @@ export class PlayerService {
       clearInterval(this.locationInterval);
       clearInterval(this.moveInterval);
       socket.removeAllListeners('player locations');
-      bulletService.endService();
+
+      // end bullet service
+      dispatch(bulletService.endService());
 
       // reset redux store
       dispatch(updateContent({splash: true, map: false}));
