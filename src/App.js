@@ -19,7 +19,7 @@ class App extends React.Component {
     this.store.dispatch(AsteroidService.startService());
 
     // end services when move away from page
-    window.onbeforeunload = () => {
+    window.onunload = () => {
       this.store.dispatch(PlayerService.endService());
       this.store.dispatch(BulletService.endService());
     };
@@ -28,7 +28,7 @@ class App extends React.Component {
     $.ajax({
       type: "GET",
       contentType: "application/json; charset=UTF-8",
-      url: "http://space-fighters-backend.herokuapp.com/",
+      url: "//space-fighters-backend.herokuapp.com/",
       success: function(data){
         console.log(data);
       }
