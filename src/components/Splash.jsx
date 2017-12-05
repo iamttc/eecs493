@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
+import $ from 'jquery';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 // import PlayerService from '../services/playerService';
@@ -11,6 +12,14 @@ const Splash = (props) => {
   if (!_.isEmpty(props.toggle) && !props.toggle.splash)
     return null;
 
+  $.ajax({
+    type: "GET", contentType: "application/json; charset=UTF-8",
+    url: "http://space-fighters-backend.herokuapp.com/",
+    success: function(data){
+      console.log(data);
+    }
+  });
+
   // clear old running services
   props.playerService.endService();
   props.bulletService.endService();
@@ -20,7 +29,7 @@ const Splash = (props) => {
 
   return (
     <div className="splash">
-      <input type="text" className="name input" placeholder="Name" defaultValue={id} />
+      <input type="text" className="name input" placeholder="Name" defaultValue={id} onKeyDown={(e) => props.checkSubmit(props, e)} />
       <button className="input" onClick={() => props.init(props)}>Play</button>
       <div className="instructions">
         [W/A/S/D] to move<br/>
@@ -46,6 +55,11 @@ const mapDispatchToProps = dispatch => ({
   init: (props) => {
     dispatch(props.playerService.startService());
     dispatch(props.bulletService.startService());
+  },
+  checkSubmit: (props, event) => {
+    if(event && event.keyCode === 13){
+      props.init(props);
+    }
   }
 });
 

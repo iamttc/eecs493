@@ -9,7 +9,13 @@ var model = require('./backend/model');
 const PORT = process.env.PORT || 8080;
 const INDEX = __dirname + '/public/index.html';
 const server = express()
-  .use((req, res) => res.sendFile(INDEX))
+  .use((req, res) => {
+    res.sendFile(INDEX)
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+  })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 
