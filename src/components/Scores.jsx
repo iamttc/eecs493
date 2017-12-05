@@ -7,10 +7,17 @@ import './styles/scores.css';
 // render content
 const HighScores = (props) => {
 
-  // get players
-  const scores = _.map(props.players, (data, playerId) => {
-    return <li key={`score-${playerId}`}>{playerId} <span className="right">{data.score}</span></li>;
+  let scores = _.map(props.players, (data, playerId) => {
+    return {
+      playerId: playerId,
+      score: data.score
+    };
   });
+  scores = _.orderBy(scores, 'score', 'desc');
+  scores = _.map(scores, (data) => {
+    return <li key={`score-${data.playerId}`}>{data.playerId} <span className="right">{data.score}</span></li>;
+  });
+
 
   // return updated map
   return (

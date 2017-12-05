@@ -61,6 +61,10 @@ const killPlayer = (player) => {
   delete players[player.playerId];
 };
 
+setInterval(() => {
+  console.log(players);
+}, 5000);
+
 
 /**
  * update bullets
