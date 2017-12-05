@@ -4,5 +4,10 @@
   width: 6px;
   border-radius: 3px;
   z-index:5;
-  background-color: white;
+  animation: blinker .2s linear infinite;
+  background: #F00;
+}
+
+@keyframes blinker {  
+  50% { background: #FFEE00; }
 }
