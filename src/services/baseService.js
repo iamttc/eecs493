@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import openSocket from 'socket.io-client';
-const socket = openSocket("localhost:8080")
-// const socket = openSocket('35.1.228.53:8080');
-// const socket = openSocket('http://space-fighters.herokuapp.com');
+// const socket = openSocket('https://space-fighters-backend.herokuapp.com');
+const socket = openSocket("localhost:8080");
 
 export { $, socket };
