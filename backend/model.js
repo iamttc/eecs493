@@ -33,7 +33,9 @@ function getAsteroids() {
         Math.floor(Math.random()*20)-10,
         Math.floor(Math.random()*20)-10,
         Math.floor(Math.random()*20)-10
-      ]
+      ],
+      speed: Math.floor(Math.random()*40) + 20,
+      dir: Math.random() > .5
     });
   }
   return asteroids;
