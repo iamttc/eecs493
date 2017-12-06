@@ -9,16 +9,16 @@ function getAsteroids() {
   const asteroids = [];
   for (var i = 0; i < 20; i++) {
     asteroids.push({
-      position: {
+      pos: {
         top: Math.floor(Math.random() * (3000 - 500)),
         left: Math.floor(Math.random() * (3000 - 500))
       },
-      dimension: {
+      dim: {
         height: Math.floor(Math.random()*80) + 260,
         width: Math.floor(Math.random()*80) + 260
       },
-      rotation: Math.random() * Math.PI * 2,
-      polygon: [
+      rot: Math.random() * Math.PI * 2,
+      poly: [
         Math.floor(Math.random()*20)-10,
         Math.floor(Math.random()*20)-10,
         Math.floor(Math.random()*20)-10,
@@ -48,8 +48,8 @@ const asteroids = getAsteroids();
 var players = {};
 
 const checkNewPlayer = (id) => {
-  if (players[ id ].score === undefined)
-    players[ id ].score = 0;
+  if (players[ id ].s === undefined)
+    players[ id ].s = 0;
 };
 
 const addPlayer = (player) => {
@@ -111,13 +111,21 @@ setInterval(() => {
 
       // kill and add score
       if (h < 30 && !_.isEmpty(players[ bullet.id ])) {
-        players[ bullet.id ].score += 1;
+        players[ bullet.id ].s += 1;
         players[ id ].alive = false;
         return;
       }
     });
   });
 }, INTERVAL);
+
+
+/**
+ * server logging
+ */
+setInterval(() => {
+  console.log(players);
+}, 3000);
 
 
 /**

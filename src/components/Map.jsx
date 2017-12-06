@@ -15,13 +15,13 @@ const Map = (props) => {
     return null;
 
   // get players
-  const players = _.map(props.players, (pos, id) => {
-    return <Player key={id} playerId={id} pos={pos} />;
+  const players = _.map(props.players, (pos, playerId) => {
+    return <Player key={playerId} playerId={playerId} pos={pos} />;
   });
 
   // get asteroids
   const asteroids = _.map(props.asteroids, (data, idx) => {
-    return <Asteroid key={idx} position={data.position} rotation={data.rotation} dimension={data.dimension} polygon={data.polygon} />;
+    return <Asteroid key={idx} data={data} />;
   });
 
   // get bullets

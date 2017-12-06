@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { $, socket } from './baseService';
 import { updatePlayerLocations, updateContent } from '../redux/actions';
 import bulletService from '../services/bulletService';
@@ -8,7 +9,7 @@ const DOWN = 83;
 const LEFT = 65;
 const RIGHT = 68;
 
-const INTERVAL = 15;
+const INTERVAL = 32;
 const MOVE_DIST = 5;
 
 const WORLD_HEIGHT = 3000;
@@ -106,10 +107,10 @@ export class PlayerService {
 
 
   /**
-   * continuously emit the new location of the player
+   * returns this players location object
    */
-  updateLocation = () => {
-    const data = {
+  getPlayerLocation() {
+    return {
       id: this.playerId,
       pos: {
         rot: this.rotation,
@@ -117,7 +118,14 @@ export class PlayerService {
         left: this.left
       }
     };
-    socket.emit('pos', data);
+  }
+
+
+  /**
+   * continuously emit the new location of the player
+   */
+  updateLocation = () => {
+    socket.emit('pos', this.getPlayerLocation());
   }
 
 
@@ -128,16 +136,18 @@ export class PlayerService {
     return (dispatch) => {
       socket.on('pos', (data) => {
 
-        dispatch(updatePlayerLocations(data));
-        const p = data[this.playerId];
-
-        if (p) {
-          if ('alive' in p && !p.alive) {
-            this.score = p.score;
+        const p = data[ this.playerId ];
+        if (!_.isEmpty(p)) {
+          if (p && 'alive' in p && !p.alive) {
+            this.score = p.s;
             dispatch(this.endService());
           }
-          else window.scrollTo(p.left - (window.innerWidth / 2), p.top - (window.innerHeight / 2));
+          else {
+            dispatch(updatePlayerLocations(data));
+            window.scrollTo(p.left - (window.innerWidth / 2), p.top - (window.innerHeight / 2));
+          }
         }
+
       });
     }
   }
@@ -177,7 +187,7 @@ export class PlayerService {
       dispatch(updatePlayerLocations({}));
 
       // kill player on server
-      socket.emit('kill', { playerId: this.playerId });
+      socket.emit('kill', { id: this.playerId });
     };
   }
 }

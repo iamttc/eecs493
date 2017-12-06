@@ -10,7 +10,7 @@ const HighScores = (props) => {
   let scores = _.map(props.players, (data, playerId) => {
     return {
       playerId: playerId,
-      score: data.score
+      score: data.s
     };
   });
   scores = _.orderBy(scores, 'score', 'desc');
