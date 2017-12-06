@@ -4,9 +4,15 @@ import './styles/bullet.css';
 
 
 const Bullet = (props) => {
+
+  const r = (props.data.d < 0) ? 100 : 6;
+
   const style = {
     top: props.data.top,
-    left: props.data.left
+    left: props.data.left,
+    width: r,
+    height: r,
+    borderRadius: r/2
   };
 
   return (
