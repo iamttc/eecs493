@@ -12,10 +12,11 @@ const UP = 87;
 const DOWN = 83;
 const LEFT = 65;
 const RIGHT = 68;
+const R = 82;
 
 const INTERVAL = 32;
 const MOVE_DIST = 5;
-const CLIP = 10;
+const AMMO = 10;
 
 const WORLD_HEIGHT = 3000;
 const WORLD_WIDTH = 3000;
@@ -25,8 +26,6 @@ export class PlayerService {
   constructor() {
     this.rotation = 0;
     this.velocity = 10;
-    this.clip = CLIP;
-    this.reloading = false;
 
     this.locationInterval = null;
     this.moveInterval = null;
@@ -47,8 +46,11 @@ export class PlayerService {
         87: false, // up
         83: false, // down
         65: false, // left
-        68: false  // right
+        68: false, // right
+        82: false
       };
+      this.ammo = AMMO;
+      this.reloading = false;
 
       // set content
       this.playerId = $('.name').val();
@@ -115,7 +117,7 @@ export class PlayerService {
   updateLocation() {
     return (dispatch) => {
       const loc = this.getPlayerLocation();
-      const data = { ...loc, ...{ ammo: this.clip } };
+      const data = { ...loc, ...{ ammo: this.ammo, reloading: this.reloading } };
       dispatch(updateMyData(data));
       window.scrollTo(loc.pos.left - (window.innerWidth / 2), loc.pos.top - (window.innerHeight / 2));
       socket.emit('pos', loc);
@@ -140,6 +142,9 @@ export class PlayerService {
     // move right
     if (this.keyDown[RIGHT] && !this.keyDown[LEFT] && this.left < (WORLD_WIDTH - 30))
       this.left += MOVE_DIST;
+    // reload
+    if (this.keyDown[R])
+      this.reload();
   };
 
 
@@ -166,7 +171,7 @@ export class PlayerService {
    * fire a bullet
    */
   fireBullet() {
-    if (this.clip > 0) {
+    if (!this.reloading && this.ammo > 1) {
       const data = {
         id: this.playerId,
         rot: this.rotation,
@@ -175,14 +180,18 @@ export class PlayerService {
         d: 0
       };
       socket.emit('fire', data);
-      this.clip -= 1;
+      this.ammo -= 1;
     }
-    else if (!this.reloading) {
+    else this.reload();
+  }
+
+  reload() {
+    if (!this.reloading) {
       this.reloading = true;
       setTimeout(() => {
-        this.clip = CLIP;
+        this.ammo = AMMO;
         this.reloading = false;
-      }, 1000)
+      }, 1000);
     }
   }
 

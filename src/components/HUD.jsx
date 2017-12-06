@@ -4,13 +4,15 @@ import './styles/hud.css';
 
 
 const Hud = (props) => {
-
   return (
     <div className="hud">
       <p>{props.data.id}</p>
       <hr />
       <ul>
-        <li>ammo <span className="right">{props.data.ammo}</span></li>
+        { !props.data.reloading
+          ? <li>Ammo <span className="right">{props.data.ammo}</span></li>
+          : <li>Reloading...</li>
+        }
       </ul>
     </div>
   );
