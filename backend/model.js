@@ -77,9 +77,13 @@ const addBullet = (bullet) => {
 setInterval(() => {
   _.each(bullets, (bullet) => {
     // move off screen
-    if (bullet.d < 0 || bullet.d > DIST){
+    if (bullet.d < -3 || bullet.d > DIST){
       bullet.top = -100;
       bullet.left = -100;
+      return bullet;
+    }
+    else if (bullet.d < 0) {
+      bullet.d -= 1;
       return bullet;
     }
     // set top and left to new coordinates
