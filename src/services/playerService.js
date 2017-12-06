@@ -1,6 +1,10 @@
 import _ from 'lodash';
 import { $, socket } from './baseService';
-import { updatePlayerLocations, updateContent } from '../redux/actions';
+import {
+  updatePlayerLocations,
+  updateMyLocation,
+  updateContent
+} from '../redux/actions';
 import bulletService from '../services/bulletService';
 
 // constants
@@ -52,7 +56,7 @@ export class PlayerService {
 
       // set emitters and listeners
       this.watchMovement();
-      this.locationInterval = setInterval(this.updateLocation, INTERVAL);
+      this.locationInterval = setInterval(() => dispatch(this.updateLocation()), INTERVAL);
       this.moveInterval = setInterval(this.moveCharacter, INTERVAL);
       dispatch(this.updateOtherPlayers());
     };
@@ -91,7 +95,36 @@ export class PlayerService {
 
 
   /**
+   * returns this players location object
+   */
+  getPlayerLocation() {
+    return {
+      id: this.playerId,
+      pos: {
+        rot: this.rotation,
+        top: this.top,
+        left: this.left
+      }
+    };
+  }
+
+
+  /**
+   * continuously emit the new location of the player
+   */
+  updateLocation() {
+    return (dispatch) => {
+      const loc = this.getPlayerLocation();
+      dispatch(updateMyLocation(loc));
+      window.scrollTo(loc.pos.left - (window.innerWidth / 2), loc.pos.top - (window.innerHeight / 2));
+      socket.emit('pos', loc);
+    };
+  }
+
+
+  /**
    * move the character based on keypress
+   * update redux store
    */
   moveCharacter = () => {
     // move up
@@ -110,47 +143,19 @@ export class PlayerService {
 
 
   /**
-   * returns this players location object
-   */
-  getPlayerLocation() {
-    return {
-      id: this.playerId,
-      pos: {
-        rot: this.rotation,
-        top: this.top,
-        left: this.left
-      }
-    };
-  }
-
-
-  /**
-   * continuously emit the new location of the player
-   */
-  updateLocation = () => {
-    socket.emit('pos', this.getPlayerLocation());
-  }
-
-
-  /**
    * update the redux store for all player locations
    */
   updateOtherPlayers() {
     return (dispatch) => {
       socket.on('pos', (data) => {
-
         const p = data[ this.playerId ];
         if (!_.isEmpty(p)) {
           if (p && 'alive' in p && !p.alive) {
             this.score = p.s;
             dispatch(this.endService());
           }
-          else {
-            dispatch(updatePlayerLocations(data));
-            window.scrollTo(p.left - (window.innerWidth / 2), p.top - (window.innerHeight / 2));
-          }
+          else dispatch(updatePlayerLocations(data));
         }
-
       });
     }
   }
@@ -176,7 +181,7 @@ export class PlayerService {
       setTimeout(() => {
         this.clip = CLIP;
         this.reloading = false;
-      }, 1500)
+      }, 1000)
     }
   }
 

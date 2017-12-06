@@ -5,6 +5,7 @@ const initState = {
     splash: true,
     map: false
   },
+  me: {},
   players: {},
   bullets: [],
   asteroids: []
@@ -12,11 +13,15 @@ const initState = {
 
 const Reducer = (state = initState, action) => {
   switch (action.type) {
+
+    case actionTypes.MY_LOCATION:
+      return { ...state, ...{ me: action.data } };
+
+    case actionTypes.PLAYER_LOCATIONS:
+      return { ...state, ...{ players: action.data } };
+
     case actionTypes.CONTENT_TOGGLE:
       return { ...state, ...{ toggle: action.data } };
-
-    case actionTypes.PLAYER_LOCATION:
-      return { ...state, ...{ players: action.data } };
 
     case actionTypes.BULLETS:
       return { ...state, ...{ bullets: action.data } };

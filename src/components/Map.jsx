@@ -15,6 +15,7 @@ const Map = (props) => {
     return null;
 
   // get players
+  props.players[ props.me.id ] = { ...props.players[ props.me.id ], ...props.me.pos };
   const players = _.map(props.players, (pos, playerId) => {
     return <Player key={playerId} playerId={playerId} pos={pos} />;
   });
@@ -43,6 +44,7 @@ const Map = (props) => {
 // redux options
 Map.propTypes = {
   toggle: PropTypes.object.isRequired,
+  me: PropTypes.object.isRequired,
   players: PropTypes.object.isRequired,
   asteroids: PropTypes.array.isRequired,
   bullets: PropTypes.array.isRequired
@@ -50,6 +52,7 @@ Map.propTypes = {
 
 const mapStateToProps = state => ({
   toggle: state.toggle,
+  me: state.me,
   players: state.players,
   asteroids: state.asteroids,
   bullets: state.bullets
