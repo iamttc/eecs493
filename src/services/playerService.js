@@ -175,6 +175,7 @@ export class PlayerService {
       this.reloading = true;
       setTimeout(() => {
         this.clip = CLIP;
+        this.reloading = false;
       }, 1500)
     }
   }
