@@ -11,6 +11,7 @@ const RIGHT = 68;
 
 const INTERVAL = 32;
 const MOVE_DIST = 5;
+const CLIP = 10;
 
 const WORLD_HEIGHT = 3000;
 const WORLD_WIDTH = 3000;
@@ -20,6 +21,8 @@ export class PlayerService {
   constructor() {
     this.rotation = 0;
     this.velocity = 10;
+    this.clip = CLIP;
+    this.reloading = false;
 
     this.locationInterval = null;
     this.moveInterval = null;
@@ -157,14 +160,23 @@ export class PlayerService {
    * fire a bullet
    */
   fireBullet() {
-    const data = {
-      id: this.playerId,
-      rot: this.rotation,
-      top: this.top,
-      left: this.left,
-      d: 0
-    };
-    socket.emit('fire', data);
+    if (this.clip > 0) {
+      const data = {
+        id: this.playerId,
+        rot: this.rotation,
+        top: this.top,
+        left: this.left,
+        d: 0
+      };
+      socket.emit('fire', data);
+      this.clip -= 1;
+    }
+    else if (!this.reloading) {
+      this.reloading = true;
+      setTimeout(() => {
+        this.clip = CLIP;
+      }, 1500)
+    }
   }
 
 
