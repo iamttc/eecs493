@@ -8,7 +8,6 @@
   max-height: 100vh;
   width: 200px;
   color: white;
-  background: rgba(0,0,0,0.6);
   overflow-y: scroll;
 
   -webkit-touch-callout: none; /* iOS Safari */
@@ -27,8 +26,7 @@
   margin: 5px;
   border: 0;
   height: 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .scores ol {
