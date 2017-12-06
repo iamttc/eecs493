@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { $, socket } from './baseService';
 import {
   updatePlayerLocations,
-  updateMyLocation,
+  updateMyData,
   updateContent
 } from '../redux/actions';
 import bulletService from '../services/bulletService';
@@ -115,7 +115,8 @@ export class PlayerService {
   updateLocation() {
     return (dispatch) => {
       const loc = this.getPlayerLocation();
-      dispatch(updateMyLocation(loc));
+      const data = { ...loc, ...{ ammo: this.clip } };
+      dispatch(updateMyData(data));
       window.scrollTo(loc.pos.left - (window.innerWidth / 2), loc.pos.top - (window.innerHeight / 2));
       socket.emit('pos', loc);
     };

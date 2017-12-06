@@ -4,6 +4,7 @@ import Player from './Player';
 import Asteroid from './Asteroid';
 import Bullet from './Bullet';
 import Scores from './Scores';
+import HUD from './HUD';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import './styles/map.css';
@@ -34,6 +35,7 @@ const Map = (props) => {
   return (
     <div className="map">
       <Scores players={props.players} />
+      <HUD data={props.me} />
       {asteroids}
       {players}
       {bullets}

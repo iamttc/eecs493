@@ -22,7 +22,7 @@ const HighScores = (props) => {
   // return updated map
   return (
     <div className="scores">
-      <p>Scores</p>
+      <p>Players</p>
       <hr />
       <ol>{scores}</ol>
     </div>

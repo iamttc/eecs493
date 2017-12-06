@@ -1,7 +1,7 @@
 import {
   CONTENT_TOGGLE,
   PLAYER_LOCATIONS,
-  MY_LOCATION,
+  MY_DATA,
   BULLETS,
   ASTEROIDS
 } from './actionTypes';
@@ -16,8 +16,8 @@ export const updatePlayerLocations = (players) => ({
   data: players
 });
 
-export const updateMyLocation = (player) => ({
-  type: MY_LOCATION,
+export const updateMyData = (player) => ({
+  type: MY_DATA,
   data: player
 });
 

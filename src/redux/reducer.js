@@ -14,7 +14,7 @@ const initState = {
 const Reducer = (state = initState, action) => {
   switch (action.type) {
 
-    case actionTypes.MY_LOCATION:
+    case actionTypes.MY_DATA:
       return { ...state, ...{ me: action.data } };
 
     case actionTypes.PLAYER_LOCATIONS:
