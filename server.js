@@ -25,22 +25,22 @@ const server = express()
 const io = socketIo(server);
 io.on('connection', (socket) => {
   // send asteroid locations
-  io.emit('asteroid locations', model.asteroids);
+  io.emit('asteroid', model.asteroids);
   // update player location
-  socket.on('update location', (data) => {
+  socket.on('pos', (data) => {
     model.addPlayer(data);
   });
   // new bullet from player
-  socket.on('fire bullet', (data) => {
+  socket.on('fire', (data) => {
     model.addBullet(data);
   });
   // remove player from game
-  socket.on('kill player', (data) => {
+  socket.on('kill', (data) => {
     model.killPlayer(data);
   });
   // dispatch data continuously
   setInterval(() => {
-    io.emit('player locations', model.players);
-    io.emit('bullet locations', model.bullets);
+    io.emit('pos', model.players);
+    io.emit('bullet', model.bullets);
   }, 32);
 });

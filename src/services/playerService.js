@@ -8,7 +8,7 @@ const DOWN = 83;
 const LEFT = 65;
 const RIGHT = 68;
 
-const UPDATE_RATE = 15;
+const INTERVAL = 15;
 const MOVE_DIST = 5;
 
 const WORLD_HEIGHT = 3000;
@@ -48,8 +48,8 @@ export class PlayerService {
 
       // set emitters and listeners
       this.watchMovement();
-      this.locationInterval = setInterval(this.updateLocation, UPDATE_RATE);
-      this.moveInterval = setInterval(this.moveCharacter, UPDATE_RATE);
+      this.locationInterval = setInterval(this.updateLocation, INTERVAL);
+      this.moveInterval = setInterval(this.moveCharacter, INTERVAL);
       dispatch(this.updateOtherPlayers());
     };
   }
@@ -64,7 +64,7 @@ export class PlayerService {
       $(window).off();
       clearInterval(this.locationInterval);
       clearInterval(this.moveInterval);
-      socket.removeAllListeners('player locations');
+      socket.removeAllListeners('pos');
 
       // end bullet service
       dispatch(bulletService.endService());
@@ -74,7 +74,7 @@ export class PlayerService {
       dispatch(updatePlayerLocations({}));
 
       // kill player on server
-      socket.emit('kill player', { playerId: this.playerId });
+      socket.emit('kill', { playerId: this.playerId });
     };
   }
 
@@ -94,14 +94,15 @@ export class PlayerService {
    * continuously emit the new location of the player
    */
   updateLocation = () => {
-    socket.emit('update location', {
+    const data = {
       playerId: this.playerId,
       position: {
         rotation: this.rotation,
         top: this.top,
         left: this.left
       }
-    });
+    };
+    socket.emit('pos', data);
   }
 
 
@@ -148,15 +149,14 @@ export class PlayerService {
    * fire a bullet
    */
   fireBullet() {
-    socket.emit('fire bullet', {
-      playerId: this.playerId,
-      position: {
-        direction: this.rotation,
-        top: this.top,
-        left: this.left,
-        distance: 0
-      }
-    });
+    const data = {
+      id: this.playerId,
+      rot: this.rotation,
+      top: this.top,
+      left: this.left,
+      d: 0
+    };
+    socket.emit('fire', data);
   }
 
 
@@ -165,20 +165,17 @@ export class PlayerService {
    */
   updateOtherPlayers() {
     return (dispatch) => {
-      socket.on('player locations', (data) => {
+      socket.on('pos', (data) => {
+
         dispatch(updatePlayerLocations(data));
-        if (data[this.playerId]) {
-          const p = data[this.playerId];
+        const p = data[this.playerId];
+
+        if (p) {
           if ('alive' in p && !p.alive) {
             this.score = p.score;
             dispatch(this.endService());
           }
-          else {
-            window.scrollTo(
-              p.left - (window.innerWidth / 2),
-              p.top - (window.innerHeight / 2)
-            );
-          }
+          else window.scrollTo(p.left - (window.innerWidth / 2), p.top - (window.innerHeight / 2));
         }
       });
     }

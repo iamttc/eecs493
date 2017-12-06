@@ -5,8 +5,8 @@ import './styles/bullet.css';
 
 const Bullet = (props) => {
   const style = {
-    top: props.position.top,
-    left: props.position.left
+    top: props.data.top,
+    left: props.data.left
   };
 
   return (
@@ -15,8 +15,7 @@ const Bullet = (props) => {
 };
 
 Bullet.propTypes = {
-  playerId: PropTypes.string.isRequired,
-  position: PropTypes.object.isRequired
+  data: PropTypes.object.isRequired
 };
 
 export default Bullet;

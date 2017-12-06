@@ -74,22 +74,22 @@ const addBullet = (bullet) => {
 setInterval(() => {
   _.each(bullets, (bullet) => {
     // move off screen
-    if (bullet.position.distance > 480) {
-      bullet.position.top = -100;
-      bullet.position.left = -100;
+    if (bullet.d > 480) {
+      bullet.top = -100;
+      bullet.left = -100;
       return bullet;
     }
     // set top and left to new coordinates
     else {
-      var a = bullet.position.direction + Math.PI/2;
-      bullet.position.left = (-12) * Math.cos(a) + bullet.position.left;
-      bullet.position.top = (-12) * Math.sin(a) + bullet.position.top;
-      bullet.position.distance += 12;
+      var a = bullet.rot + Math.PI/2;
+      bullet.left = (-12) * Math.cos(a) + bullet.left;
+      bullet.top = (-12) * Math.sin(a) + bullet.top;
+      bullet.d += 12;
       return bullet;
     }
   });
   _.remove(bullets, (bullet) => {
-    return bullet.position.top < 0 && bullet.position.left < 0;
+    return bullet.top < 0 && bullet.left < 0;
   });
 }, INTERVAL);
 
@@ -99,19 +99,20 @@ setInterval(() => {
  */
 setInterval(() => {
   _.each(bullets, (bullet) => {
-    _.each(players, (position, playerId) => {
-      if (bullet.playerId === playerId)
+    _.each(players, (pos, playerId) => {
+      if (bullet.id === playerId)
         return;
+
       var d = {
-        x: bullet.position.left - position.left,
-        y: bullet.position.top  - position.top
+        x: bullet.left - pos.left,
+        y: bullet.top - pos.top
       };
       var h = Math.sqrt(d.x * d.x + d.y * d.y);
 
       // kill and add score
-      if (h < 30 && !_.isEmpty(players[bullet.playerId])) {
-        players[bullet.playerId].score += 1;
-        players[playerId].alive = false;
+      if (h < 30 && !_.isEmpty(players[ bullet.id ])) {
+        players[ bullet.id ].score += 1;
+        players[ playerId ].alive = false;
         return;
       }
     });

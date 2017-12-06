@@ -4,7 +4,7 @@ import { updateBullets } from '../redux/actions';
 export class BulletService {
   startService() {
     return (dispatch) => {
-      socket.on('bullet locations', (data) => {
+      socket.on('bullet', (data) => {
         dispatch(updateBullets(data));
       });
     }
@@ -12,7 +12,7 @@ export class BulletService {
 
   endService() {
     return (dispatch) => {
-      socket.removeAllListeners('bullet locations');
+      socket.removeAllListeners('bullet');
       dispatch(updateBullets([]));
     };
   }

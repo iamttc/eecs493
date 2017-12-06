@@ -26,7 +26,7 @@ const Map = (props) => {
 
   // get bullets
   const bullets = _.map(props.bullets, (data, idx) => {
-    return <Bullet key={idx} playerId={data.playerId} position={data.position} />;
+    return <Bullet key={idx} data={data} />;
   });
 
   // return updated map
