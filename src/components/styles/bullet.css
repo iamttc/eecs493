@@ -1,11 +1,11 @@
 .bullet {
   position: absolute;
-  height: 6px;
-  width: 6px;
-  border-radius: 3px;
   z-index:5;
   animation: blinker .2s linear infinite;
   background: #F00;
+  -ms-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 @keyframes blinker {  

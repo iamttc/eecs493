@@ -1,5 +1,6 @@
 var _ = require('lodash');
 const INTERVAL = 32;
+const DIST = 480;
 
 
 /**
@@ -76,7 +77,7 @@ const addBullet = (bullet) => {
 setInterval(() => {
   _.each(bullets, (bullet) => {
     // move off screen
-    if (bullet.d > 480) {
+    if (bullet.d < 0 || bullet.d > DIST){
       bullet.top = -100;
       bullet.left = -100;
       return bullet;
@@ -115,6 +116,7 @@ setInterval(() => {
       if (h < 30 && !_.isEmpty(players[ bullet.id ])) {
         players[ bullet.id ].s += 1;
         players[ id ].alive = false;
+        bullet.d = -1;
         return;
       }
     });
