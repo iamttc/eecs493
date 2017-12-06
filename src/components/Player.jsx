@@ -7,12 +7,12 @@ const Player = (props) => {
 
   // position
   const style1 = {
-    top: props.position.top,
-    left: props.position.left,
+    top: props.pos.top,
+    left: props.pos.left,
   };
 
   // rotation
-  const rotate = `rotate(${props.position.rotation}rad)`;
+  const rotate = `rotate(${props.pos.rot}rad)`;
   const style2 = {
     msTransform: rotate,
     WebkitTransform: rotate,
@@ -32,7 +32,7 @@ const Player = (props) => {
 
 Player.propTypes = {
   playerId: PropTypes.string.isRequired,
-  position: PropTypes.object.isRequired
+  pos: PropTypes.object.isRequired
 };
 
 export default Player;

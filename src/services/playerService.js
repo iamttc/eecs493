@@ -56,30 +56,6 @@ export class PlayerService {
 
 
   /**
-   * stops all intervals - no longer emits
-   * removes socket listeners
-   */
-  endService() {
-    return (dispatch) => {
-      $(window).off();
-      clearInterval(this.locationInterval);
-      clearInterval(this.moveInterval);
-      socket.removeAllListeners('pos');
-
-      // end bullet service
-      dispatch(bulletService.endService());
-
-      // reset redux store
-      dispatch(updateContent({splash: true, map: false}));
-      dispatch(updatePlayerLocations({}));
-
-      // kill player on server
-      socket.emit('kill', { playerId: this.playerId });
-    };
-  }
-
-
-  /**
    * @returns {string} playerId
    */
   getName() {
@@ -87,22 +63,6 @@ export class PlayerService {
   }
   getScore() {
     return this.score;
-  }
-
-
-  /**
-   * continuously emit the new location of the player
-   */
-  updateLocation = () => {
-    const data = {
-      playerId: this.playerId,
-      position: {
-        rotation: this.rotation,
-        top: this.top,
-        left: this.left
-      }
-    };
-    socket.emit('pos', data);
   }
 
 
@@ -146,17 +106,18 @@ export class PlayerService {
 
 
   /**
-   * fire a bullet
+   * continuously emit the new location of the player
    */
-  fireBullet() {
+  updateLocation = () => {
     const data = {
       id: this.playerId,
-      rot: this.rotation,
-      top: this.top,
-      left: this.left,
-      d: 0
+      pos: {
+        rot: this.rotation,
+        top: this.top,
+        left: this.left
+      }
     };
-    socket.emit('fire', data);
+    socket.emit('pos', data);
   }
 
 
@@ -179,6 +140,45 @@ export class PlayerService {
         }
       });
     }
+  }
+
+
+  /**
+   * fire a bullet
+   */
+  fireBullet() {
+    const data = {
+      id: this.playerId,
+      rot: this.rotation,
+      top: this.top,
+      left: this.left,
+      d: 0
+    };
+    socket.emit('fire', data);
+  }
+
+
+  /**
+   * stops all intervals - no longer emits
+   * removes socket listeners
+   */
+  endService() {
+    return (dispatch) => {
+      $(window).off();
+      clearInterval(this.locationInterval);
+      clearInterval(this.moveInterval);
+      socket.removeAllListeners('pos');
+
+      // end bullet service
+      dispatch(bulletService.endService());
+
+      // reset redux store
+      dispatch(updateContent({splash: true, map: false}));
+      dispatch(updatePlayerLocations({}));
+
+      // kill player on server
+      socket.emit('kill', { playerId: this.playerId });
+    };
   }
 }
 

@@ -47,18 +47,18 @@ const asteroids = getAsteroids();
  */
 var players = {};
 
-const checkNewPlayer = (playerId) => {
-  if (players[playerId].score === undefined)
-    players[playerId].score = 0;
+const checkNewPlayer = (id) => {
+  if (players[ id ].score === undefined)
+    players[ id ].score = 0;
 };
 
 const addPlayer = (player) => {
-  players[player.playerId] = Object.assign({}, players[player.playerId], player.position);
-  checkNewPlayer(player.playerId);
+  players[ player.id ] = Object.assign({}, players[ player.id ], player.pos);
+  checkNewPlayer(player.id);
 };
 
 const killPlayer = (player) => {
-  delete players[player.playerId];
+  delete players[ player.id ];
 };
 
 
@@ -99,8 +99,8 @@ setInterval(() => {
  */
 setInterval(() => {
   _.each(bullets, (bullet) => {
-    _.each(players, (pos, playerId) => {
-      if (bullet.id === playerId)
+    _.each(players, (pos, id) => {
+      if (bullet.id === id)
         return;
 
       var d = {
@@ -112,7 +112,7 @@ setInterval(() => {
       // kill and add score
       if (h < 30 && !_.isEmpty(players[ bullet.id ])) {
         players[ bullet.id ].score += 1;
-        players[ playerId ].alive = false;
+        players[ id ].alive = false;
         return;
       }
     });

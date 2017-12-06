@@ -15,8 +15,8 @@ const Map = (props) => {
     return null;
 
   // get players
-  const players = _.map(props.players, (position, playerId) => {
-    return <Player key={playerId} playerId={playerId} position={position} />;
+  const players = _.map(props.players, (pos, id) => {
+    return <Player key={id} playerId={id} pos={pos} />;
   });
 
   // get asteroids
@@ -45,8 +45,7 @@ Map.propTypes = {
   toggle: PropTypes.object.isRequired,
   players: PropTypes.object.isRequired,
   asteroids: PropTypes.array.isRequired,
-  bullets: PropTypes.array.isRequired,
-  changeScreen: PropTypes.func
+  bullets: PropTypes.array.isRequired
 };
 
 const mapStateToProps = state => ({
