@@ -21,3 +21,16 @@
   from { -webkit-transform: rotate(0rad); transform:rotate(0rad); }
   to { -webkit-transform: rotate(6.28rad); transform:rotate(6.28rad); } 
 }
+
+@-moz-keyframes spin-back { 
+  from { -moz-transform: rotate(0rad); }
+  to { -moz-transform: rotate(-6.28rad); } 
+}
+@-webkit-keyframes spin-back { 
+  from { -webkit-transform: rotate(0rad)}
+  to { -webkit-transform: rotate(-6.28rad); } 
+}
+@keyframes spin-back { 
+  from { -webkit-transform: rotate(0rad); transform:rotate(0rad); }
+  to { -webkit-transform: rotate(-6.28rad); transform:rotate(-6.28rad); } 
+}

@@ -9,6 +9,8 @@ const Asteroid = (props) => {
   const dim = props.data.dim;
   const rot = props.data.rot;
   const poly = props.data.poly;
+  const speed = props.data.speed;
+  const dir = props.data.dir;
 
   // position
   const rotate = `rotate(${rot}rad)`;
@@ -21,6 +23,9 @@ const Asteroid = (props) => {
     ${0 + poly[10]}% ${60 + poly[11]}%, 
     ${10 + poly[12]}% ${20 + poly[13]}%
   )`;
+  const animation = (dir) 
+    ? `spin ${speed}s linear infinite` 
+    : `spin-back ${speed}s linear infinite`;
   const style = {
     top: pos.top,
     left: pos.left,
@@ -30,7 +35,11 @@ const Asteroid = (props) => {
     height: dim.height,
     width: dim.width,
     clipPath: polygon,
-    WebkitClipPath: polygon
+    WebkitClipPath: polygon,
+    WebkitAnimation: animation,
+    MozAnimation: animation,
+    animation: animation
+
   };
 
   return (
