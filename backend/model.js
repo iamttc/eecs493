@@ -73,13 +73,8 @@ const addBullet = (bullet) => {
 
 setInterval(() => {
   _.each(bullets, (bullet) => {
-    var d = {
-      x: bullet.position.left - bullet.position.init_x,
-      y: bullet.position.top  - bullet.position.init_y
-    };
-    var h = Math.sqrt(d.x * d.x + d.y * d.y);
     // move off screen
-    if (h > 480) {
+    if (bullet.position.distance > 480) {
       bullet.position.top = -100;
       bullet.position.left = -100;
       return bullet;
@@ -89,6 +84,7 @@ setInterval(() => {
       var a = bullet.position.direction + Math.PI/2;
       bullet.position.left = (-12) * Math.cos(a) + bullet.position.left;
       bullet.position.top = (-12) * Math.sin(a) + bullet.position.top;
+      bullet.position.distance += 12;
       return bullet;
     }
   });

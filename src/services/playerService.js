@@ -154,8 +154,7 @@ export class PlayerService {
         direction: this.rotation,
         top: this.top,
         left: this.left,
-        init_x: this.left,
-        init_y: this.top,
+        distance: 0
       }
     });
   }
