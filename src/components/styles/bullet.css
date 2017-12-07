@@ -1,6 +1,6 @@
 .bullet {
   position: absolute;
-  z-index:5;
+  z-index: 9;
   animation: blinker .2s linear infinite;
   background: #F00;
   -ms-transform: translate(-50%, -50%);
