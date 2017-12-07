@@ -3,7 +3,8 @@ import { $, socket } from './baseService';
 import {
   updatePlayerLocations,
   updateMyData,
-  updateContent
+  updateContent,
+  error
 } from '../redux/actions';
 import bulletService from '../services/bulletService';
 
@@ -54,6 +55,15 @@ export class PlayerService {
 
       // set content
       this.playerId = $('.name').val();
+      if (_.isEmpty(this.playerId)) {
+        dispatch(error('Please specify a name'));
+        setTimeout(() => {
+          dispatch(error(null));
+        }, 3000);
+        return;
+      }
+
+      // show map
       dispatch(updateContent({splash: false, map: true}));
 
       // set emitters and listeners

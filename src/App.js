@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import Reducer from './redux/reducer';
 import Splash from './components/Splash';
 import Map from './components/Map';
+import Error from './components/Error'
 import AsteroidService from './services/asteroidService';
 import PlayerService from './services/playerService';
 import BulletService from './services/bulletService';
@@ -41,6 +42,7 @@ class App extends React.Component {
         <div className="app">
           <Splash playerService={PlayerService} bulletService={BulletService} />
           <Map />
+          <Error />
         </div>
       </Provider>
     );

@@ -8,7 +8,8 @@ const initState = {
   me: {},
   players: {},
   bullets: [],
-  asteroids: []
+  asteroids: [],
+  error: null
 };
 
 const Reducer = (state = initState, action) => {
@@ -28,6 +29,9 @@ const Reducer = (state = initState, action) => {
 
     case actionTypes.ASTEROIDS:
       return { ...state, ...{ asteroids: action.data } };
+
+    case actionTypes.ERROR:
+    return { ...state, ...{ error: action.data } };
 
     default:
       return state;
