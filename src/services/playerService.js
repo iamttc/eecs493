@@ -56,21 +56,37 @@ export class PlayerService {
       // set content
       this.playerId = $('.name').val();
       if (_.isEmpty(this.playerId)) {
-        dispatch(error('Please specify a name'));
-        setTimeout(() => {
-          dispatch(error(null));
-        }, 3000);
+        dispatch(this.showError('Please specify a name'));
         return;
       }
 
-      // show map
-      dispatch(updateContent({splash: false, map: true}));
+      socket.emit('players');
+      socket.on('players', (data) => {
+        if (_.some(data, p => this.playerId === p)) {
+          dispatch(this.showError('That name is already in use'));
+          return;
+        }
+        // show map
+        dispatch(updateContent({splash: false, map: true}));
+  
+        // set emitters and listeners
+        this.watchMovement();
+        this.locationInterval = setInterval(() => dispatch(this.updateLocation()), INTERVAL);
+        this.moveInterval = setInterval(this.moveCharacter, INTERVAL);
+        dispatch(this.updateOtherPlayers());
+      });
+    };
+  }
 
-      // set emitters and listeners
-      this.watchMovement();
-      this.locationInterval = setInterval(() => dispatch(this.updateLocation()), INTERVAL);
-      this.moveInterval = setInterval(this.moveCharacter, INTERVAL);
-      dispatch(this.updateOtherPlayers());
+  /**
+   * show an error
+   */
+  showError(msg) {
+    return (dispatch) => {
+      dispatch(error(msg));
+      setTimeout(() => {
+        dispatch(error(null));
+      }, 3000);
     };
   }
 
