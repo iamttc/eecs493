@@ -1,5 +1,6 @@
 var _ = require('lodash');
 const INTERVAL = 32;
+const DIST = 480;
 
 
 /**
@@ -35,7 +36,12 @@ function getAsteroids() {
         Math.floor(Math.random()*20)-10
       ],
       speed: Math.floor(Math.random()*40) + 20,
-      dir: Math.random() > .5
+      dir: Math.random() > .5,
+      col: [
+        Math.floor(Math.random()*20)-10,
+        Math.floor(Math.random()*20)-10,
+        Math.floor(Math.random()*20)-10
+      ]
     });
   }
   return asteroids;
@@ -76,9 +82,13 @@ const addBullet = (bullet) => {
 setInterval(() => {
   _.each(bullets, (bullet) => {
     // move off screen
-    if (bullet.d > 480) {
+    if (bullet.d < -3 || bullet.d > DIST){
       bullet.top = -100;
       bullet.left = -100;
+      return bullet;
+    }
+    else if (bullet.d < 0) {
+      bullet.d -= 1;
       return bullet;
     }
     // set top and left to new coordinates
@@ -115,6 +125,7 @@ setInterval(() => {
       if (h < 30 && !_.isEmpty(players[ bullet.id ])) {
         players[ bullet.id ].s += 1;
         players[ id ].alive = false;
+        bullet.d = -1;
         return;
       }
     });

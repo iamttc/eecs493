@@ -7,7 +7,6 @@
   height: auto;
   width: 200px;
   color: white;
-  background: rgba(0,0,0,0.6);
 
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
@@ -25,16 +24,15 @@
   margin: 5px;
   border: 0;
   height: 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .hud ul {
-  margin: 0 5px 0 20px;
+  margin: 0 5px 0 5px;
 }
 
 .hud li {
-  list-style-type: disc;
+  list-style-type: none;
   font-size: 0.8em;
 }
 

@@ -205,17 +205,15 @@ export class PlayerService {
       $(window).off();
       clearInterval(this.locationInterval);
       clearInterval(this.moveInterval);
-      socket.removeAllListeners('pos');
-
-      // end bullet service
-      dispatch(bulletService.endService());
-
-      // reset redux store
-      dispatch(updateContent({splash: true, map: false}));
-      dispatch(updatePlayerLocations({}));
-
-      // kill player on server
       socket.emit('kill', { id: this.playerId });
+
+      // watch a 1.5 seconds of gameplay after death
+      setTimeout(() => {
+        socket.removeAllListeners('pos');
+        dispatch(bulletService.endService());
+        dispatch(updateContent({splash: true, map: false}));
+        dispatch(updatePlayerLocations({}));
+      }, 1500);
     };
   }
 }
