@@ -26,11 +26,11 @@ class App extends React.Component {
 
     // wakeup backend server
     $.ajax({
-      type: "GET",
-      contentType: "application/json; charset=UTF-8",
-      url: "//space-fighters-backend.herokuapp.com/",
+      type: 'GET',
+      contentType: 'application/json; charset=UTF-8',
+      url: '//space-fighters-backend.herokuapp.com/',
       success: function(data){
-        console.log(data);
+        console.log('received response from backend');
       }
     });
   }

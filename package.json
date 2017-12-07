@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=8443 react-scripts start",
     "server": "node server",
     "build": "react-scripts build",
     "eject": "react-scripts eject"
