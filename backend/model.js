@@ -123,10 +123,11 @@ setInterval(() => {
 
       // kill and add score
       if (h < 30 && !_.isEmpty(players[ bullet.id ])) {
-        players[ bullet.id ].s += 1;
+        if (_.has(players[ id ], 'alive') && !players[ id ].alive)
+          return;
         players[ id ].alive = false;
+        players[ bullet.id ].s += 1;
         bullet.d = -1;
-        return;
       }
     });
   });

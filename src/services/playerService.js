@@ -27,11 +27,10 @@ export class PlayerService {
   constructor() {
     this.rotation = 0;
     this.velocity = 10;
-
-    this.locationInterval = null;
-    this.moveInterval = null;
     this.playerId = '';
     this.score = 0;
+    this.locationInterval = null;
+    this.moveInterval = null;
   }
 
 
@@ -41,8 +40,8 @@ export class PlayerService {
   startService() {
     return (dispatch) => {
       // positioning
-      this.top = Math.floor(Math.random() * WORLD_HEIGHT - 100) + 50;
-      this.left = Math.floor(Math.random() * WORLD_WIDTH - 100) + 50;
+      this.top = Math.floor(Math.random() * (WORLD_HEIGHT - 100)) + 50;
+      this.left = Math.floor(Math.random() * (WORLD_WIDTH - 100)) + 50;
       this.keyDown = {
         87: false, // up
         83: false, // down
@@ -50,8 +49,11 @@ export class PlayerService {
         68: false, // right
         82: false  // R
       };
+
+      // player variables
       this.ammo = AMMO;
       this.reloading = false;
+      this.removeIntervals();
 
       // set content
       this.playerId = $('.name').val();
@@ -66,15 +68,22 @@ export class PlayerService {
           dispatch(this.showError('That name is already in use'));
           return;
         }
-        // show map
-        dispatch(updateContent({splash: false, map: true}));
-  
-        // set emitters and listeners
-        this.watchMovement();
-        this.locationInterval = setInterval(() => dispatch(this.updateLocation()), INTERVAL);
-        this.moveInterval = setInterval(this.moveCharacter, INTERVAL);
-        dispatch(this.updateOtherPlayers());
+        dispatch(this.start());
       });
+    };
+  }
+
+  start() {
+    return (dispatch) => {
+      // redux store
+      dispatch(error(null));
+      dispatch(updateContent({splash: false, map: true}));
+  
+      // set emitters and listeners
+      this.watchMovement();
+      this.locationInterval = setInterval(() => dispatch(this.updateLocation()), INTERVAL);
+      this.moveInterval = setInterval(this.moveCharacter, INTERVAL);
+      dispatch(this.updateOtherPlayers());
     };
   }
 
@@ -246,13 +255,8 @@ export class PlayerService {
    */
   endService() {
     return (dispatch) => {
-      $(window).off();
-      clearInterval(this.locationInterval);
-      clearInterval(this.moveInterval);
-      socket.emit('kill', { id: this.playerId });
-      dispatch(updateMyData(
-        { ...this.getPlayerLocation(), ...this.getPlayerData(false) }
-      ));
+      dispatch(this.removePlayer());
+      this.removeIntervals();
 
       // watch a 1.5 seconds of gameplay after death
       setTimeout(() => {
@@ -262,6 +266,24 @@ export class PlayerService {
         dispatch(updatePlayerLocations({}));
       }, 2000);
     };
+  }
+
+  removePlayer() {
+    return (dispatch) => {
+      socket.removeAllListeners('players');
+      socket.emit('kill', { id: this.playerId });
+      dispatch(updateMyData(
+        { ...this.getPlayerLocation(), ...this.getPlayerData(false) }
+      ));
+    };
+  }
+
+  removeIntervals() {
+    $(window).off();
+    clearInterval(this.locationInterval);
+    clearInterval(this.moveInterval);
+    this.locationInterval = null;
+    this.moveInterval = null;
   }
 }
 

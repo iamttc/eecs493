@@ -20,7 +20,7 @@ class App extends React.Component {
     this.store.dispatch(AsteroidService.startService());
 
     // end services when move away from page
-    window.onunload = () => {
+    window.onbeforeunload = () => {
       this.store.dispatch(PlayerService.endService());
       this.store.dispatch(BulletService.endService());
     };
