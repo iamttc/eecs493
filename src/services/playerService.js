@@ -84,8 +84,8 @@ export class PlayerService {
   start() {
     return (dispatch) => {
       // redux store
-      dispatch(error(null));
       dispatch(updateContent({splash: false, map: true}));
+      dispatch(error(null));
   
       // set emitters and listeners
       this.watchMovement();
