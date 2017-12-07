@@ -51,7 +51,6 @@ export class PlayerService {
       };
       this.ammo = AMMO;
       this.reloading = false;
-      this.alive = true; // need in both locations
 
       // set content
       this.playerId = $('.name').val();
@@ -91,7 +90,7 @@ export class PlayerService {
       var r = Math.atan2(this.top - e.pageY, this.left - e.pageX) - Math.PI/2;
       this.rotation = r;
     });
-    $(window).mousedown((e) => {
+    $(window).mousedown(() => {
       this.fireBullet();
     });
   }
@@ -113,18 +112,26 @@ export class PlayerService {
 
 
   /**
+   * returns other player data
+   */
+  getPlayerData(alive = true) {
+    return {
+      ammo: this.ammo,
+      reloading: this.reloading,
+      score: this.score,
+      alive
+    }
+  }
+
+
+  /**
    * continuously emit the new location of the player
    */
   updateLocation() {
     return (dispatch) => {
       const loc = this.getPlayerLocation();
       socket.emit('pos', loc);
-      const data = { ...loc, ...{
-        ammo: this.ammo,
-        reloading: this.reloading,
-        score: this.score,
-        alive: this.alive
-      } };
+      const data = { ...loc, ...this.getPlayerData() };
       dispatch(updateMyData(data));
       window.scrollTo(loc.pos.left - (window.innerWidth / 2), loc.pos.top - (window.innerHeight / 2));
     };
@@ -166,10 +173,8 @@ export class PlayerService {
           return;
 
         this.score = p.s;
-        if (_.has(p, 'alive') && !p.alive) {
-          this.alive = false;
+        if (_.has(p, 'alive') && !p.alive)
           dispatch(this.endService());
-        }
         else dispatch(updatePlayerLocations(data));
       });
     }
@@ -194,6 +199,10 @@ export class PlayerService {
     else this.reload();
   }
 
+
+  /**
+   * reload
+   */
   reload() {
     if (!this.reloading) {
       this.reloading = true;
@@ -215,6 +224,9 @@ export class PlayerService {
       clearInterval(this.locationInterval);
       clearInterval(this.moveInterval);
       socket.emit('kill', { id: this.playerId });
+      dispatch(updateMyData(
+        { ...this.getPlayerLocation(), ...this.getPlayerData(false) }
+      ));
 
       // watch a 1.5 seconds of gameplay after death
       setTimeout(() => {
@@ -222,7 +234,7 @@ export class PlayerService {
         dispatch(bulletService.endService());
         dispatch(updateContent({splash: true, map: false}));
         dispatch(updatePlayerLocations({}));
-      }, 1500);
+      }, 2000);
     };
   }
 }

@@ -4,6 +4,8 @@ import './styles/hud.css';
 
 
 const Hud = (props) => {
+  if (props.data.alive === undefined)
+    props.data.alive = true;
   return (
     <div>
       <div className="hud">
@@ -17,7 +19,7 @@ const Hud = (props) => {
           }
         </ul>
       </div>
-      { (props.data.alive !== undefined && !props.data.alive)
+      { !props.data.alive
         ? <div className="wasted">Game Over<br /><br />Score: {props.data.score}</div>
         : null
       }
