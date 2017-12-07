@@ -30,7 +30,7 @@ export class PlayerService {
     this.locationInterval = null;
     this.moveInterval = null;
     this.playerId = '';
-    this.score = null;
+    this.score = 0;
   }
 
 
@@ -47,10 +47,11 @@ export class PlayerService {
         83: false, // down
         65: false, // left
         68: false, // right
-        82: false
+        82: false  // R
       };
       this.ammo = AMMO;
       this.reloading = false;
+      this.alive = true; // need in both locations
 
       // set content
       this.playerId = $('.name').val();
@@ -117,10 +118,15 @@ export class PlayerService {
   updateLocation() {
     return (dispatch) => {
       const loc = this.getPlayerLocation();
-      const data = { ...loc, ...{ ammo: this.ammo, reloading: this.reloading } };
+      socket.emit('pos', loc);
+      const data = { ...loc, ...{
+        ammo: this.ammo,
+        reloading: this.reloading,
+        score: this.score,
+        alive: this.alive
+      } };
       dispatch(updateMyData(data));
       window.scrollTo(loc.pos.left - (window.innerWidth / 2), loc.pos.top - (window.innerHeight / 2));
-      socket.emit('pos', loc);
     };
   }
 
@@ -154,14 +160,17 @@ export class PlayerService {
   updateOtherPlayers() {
     return (dispatch) => {
       socket.on('pos', (data) => {
+
         const p = data[ this.playerId ];
-        if (!_.isEmpty(p)) {
-          if (p && 'alive' in p && !p.alive) {
-            this.score = p.s;
-            dispatch(this.endService());
-          }
-          else dispatch(updatePlayerLocations(data));
+        if (_.isEmpty(p))
+          return;
+
+        this.score = p.s;
+        if (_.has(p, 'alive') && !p.alive) {
+          this.alive = false;
+          dispatch(this.endService());
         }
+        else dispatch(updatePlayerLocations(data));
       });
     }
   }

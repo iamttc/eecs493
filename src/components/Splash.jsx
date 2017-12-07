@@ -30,17 +30,18 @@ const Splash = (props) => {
 
       {/* show score or instructions */}
       <div className="instructions">
-        {score != null
-          ? <div><p>GAMEOVER</p><br></br><p>Score: {score}</p></div>
-          : <div><br></br>
-          <div>
-          <img src={keys} className='keys' alt='cannot-show'></img>
-          <img src={mouse} className='mouse' alt='cannot-show'></img>
-          </div>
-          <p> &larr; Keys to move</p>
-          <br></br>
-          <p>Click to shoot &rarr;</p>
-          </div>
+        { id
+          ? <div><p>Previous Score: {score}</p></div>
+          : <div>
+              <br></br>
+              <div>
+                <img src={keys} className='keys' alt='cannot-show'></img>
+                <img src={mouse} className='mouse' alt='cannot-show'></img>
+              </div>
+              <p> &larr; Keys to move</p>
+              <br></br>
+              <p>Click to shoot &rarr;</p>
+            </div>
         }
       </div>
 
