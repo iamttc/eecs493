@@ -1,5 +1,6 @@
 var _ = require('lodash');
 const INTERVAL = 32;
+const NUM_ASTEROIDS = 20;
 const DIST = 480;
 
 
@@ -8,7 +9,7 @@ const DIST = 480;
  */
 function getAsteroids() {
   const asteroids = [];
-  for (var i = 0; i < 36; i++) {
+  for (var i = 0; i < NUM_ASTEROIDS; i++) {
     asteroids.push({
       pos: {
         top: Math.floor(Math.random() * (3000 - 500)),
