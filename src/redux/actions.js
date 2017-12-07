@@ -3,7 +3,8 @@ import {
   PLAYER_LOCATIONS,
   MY_DATA,
   BULLETS,
-  ASTEROIDS
+  ASTEROIDS,
+  ERROR
 } from './actionTypes';
 
 export const updateContent = (toggle) => ({
@@ -29,4 +30,9 @@ export const updateBullets = (bullets) => ({
 export const updateAsteroids = (asteroids) => ({
   type: ASTEROIDS,
   data: asteroids
+});
+
+export const error = (err) => ({
+  type: ERROR,
+  data: err
 });

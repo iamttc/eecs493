@@ -3,7 +3,8 @@ import { $, socket } from './baseService';
 import {
   updatePlayerLocations,
   updateMyData,
-  updateContent
+  updateContent,
+  error
 } from '../redux/actions';
 import bulletService from '../services/bulletService';
 
@@ -54,13 +55,38 @@ export class PlayerService {
 
       // set content
       this.playerId = $('.name').val();
-      dispatch(updateContent({splash: false, map: true}));
+      if (_.isEmpty(this.playerId)) {
+        dispatch(this.showError('Please specify a name'));
+        return;
+      }
 
-      // set emitters and listeners
-      this.watchMovement();
-      this.locationInterval = setInterval(() => dispatch(this.updateLocation()), INTERVAL);
-      this.moveInterval = setInterval(this.moveCharacter, INTERVAL);
-      dispatch(this.updateOtherPlayers());
+      socket.emit('players');
+      socket.on('players', (data) => {
+        if (_.some(data, p => this.playerId === p)) {
+          dispatch(this.showError('That name is already in use'));
+          return;
+        }
+        // show map
+        dispatch(updateContent({splash: false, map: true}));
+  
+        // set emitters and listeners
+        this.watchMovement();
+        this.locationInterval = setInterval(() => dispatch(this.updateLocation()), INTERVAL);
+        this.moveInterval = setInterval(this.moveCharacter, INTERVAL);
+        dispatch(this.updateOtherPlayers());
+      });
+    };
+  }
+
+  /**
+   * show an error
+   */
+  showError(msg) {
+    return (dispatch) => {
+      dispatch(error(msg));
+      setTimeout(() => {
+        dispatch(error(null));
+      }, 3000);
     };
   }
 

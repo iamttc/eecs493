@@ -26,6 +26,10 @@ const io = socketIo(server);
 io.on('connection', (socket) => {
   // send asteroid locations
   io.emit('asteroid', model.asteroids);
+  // get players
+  socket.on('players', () => {
+    socket.emit('players', Object.keys(model.players));
+  });
   // update player location
   socket.on('pos', (data) => {
     model.addPlayer(data);
