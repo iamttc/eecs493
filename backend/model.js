@@ -8,7 +8,7 @@ const DIST = 480;
  */
 function getAsteroids() {
   const asteroids = [];
-  for (var i = 0; i < 20; i++) {
+  for (var i = 0; i < 36; i++) {
     asteroids.push({
       pos: {
         top: Math.floor(Math.random() * (3000 - 500)),
@@ -41,7 +41,8 @@ function getAsteroids() {
         Math.floor(Math.random()*20)-10,
         Math.floor(Math.random()*20)-10,
         Math.floor(Math.random()*20)-10
-      ]
+      ],
+      z: (Math.random()>.6) ? 8 : 10
     });
   }
   return asteroids;

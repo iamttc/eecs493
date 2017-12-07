@@ -12,6 +12,7 @@ const Asteroid = (props) => {
   const speed = props.data.speed;
   const dir = props.data.dir;
   const col = props.data.col;
+  const z = props.data.z;
 
   // position
   const rotate = `rotate(${rot}rad)`;
@@ -27,7 +28,12 @@ const Asteroid = (props) => {
   const animation = (dir) 
     ? `spin ${speed}s linear infinite` 
     : `spin-back ${speed}s linear infinite`;
-  const color = `rgb(${80 + col[0]}, ${95 + col[1]}, ${79 + col[2]})`
+  const colorMod = (z === 8) ? -60 : 0;
+  const color = `rgb(
+    ${80 + col[0] + colorMod}, 
+    ${95 + col[1] + colorMod}, 
+    ${79 + col[2] + colorMod}
+  )`;
   const style = {
     top: pos.top,
     left: pos.left,
@@ -41,7 +47,8 @@ const Asteroid = (props) => {
     WebkitAnimation: animation,
     MozAnimation: animation,
     animation: animation,
-    background: color
+    background: color,
+    zIndex: z
   };
 
   return (
