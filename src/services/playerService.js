@@ -87,8 +87,7 @@ export class PlayerService {
       this.keyDown[e.which] = false;
     });
     $(window).mousemove((e) => {
-      var r = Math.atan2(this.top - e.pageY, this.left - e.pageX) - Math.PI/2;
-      this.rotation = r;
+      this.rotation = Math.atan2(this.top - e.pageY, this.left - e.pageX) - Math.PI/2;
     });
     $(window).mousedown(() => {
       this.fireBullet();
@@ -103,7 +102,7 @@ export class PlayerService {
     return {
       id: this.playerId,
       pos: {
-        rot: this.rotation,
+        rot: this.rotation.toFixed(1),
         top: this.top,
         left: this.left
       }
